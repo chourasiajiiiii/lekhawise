@@ -1,0 +1,66 @@
+name: Android APK
+
+# Builds the release APK on a GitHub-hosted Linux machine and publishes it as the "android-latest" release, to
+# install on any Android phone. Free for public repositories. Run it from the Actions tab ("Run workflow") or with:
+# gh workflow run android-apk.yml
+# The APK is signed with the test key that comes with Expo's generated android/ folder: fine for testing and
+# sharing, but a Play Store release needs its own key (see "Build and publish" in the README).
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+
+      - name: Generate the Android project
+        run: npx expo prebuild --platform android --clean
+        env:
+          CI: '1'
+
+      # 64-bit ARM only: every Android phone sold in recent years, and a much faster build than all four ABIs.
+      - name: Build the APK
+        working-directory: android
+        run: ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a --no-daemon
+
+      - name: Collect the APK
+        run: |
+          mkdir -p build
+          cp android/app/build/outputs/apk/release/app-release.apk build/LekhaWise.apk
+          ls -lh build/LekhaWise.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/LekhaWise.apk
+          retention-days: 14
+
+      - name: Publish as the android-latest download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete android-latest --yes --cleanup-tag || true
+          gh release create android-latest build/LekhaWise.apk --prerelease --target "$GITHUB_SHA" \
+            --title "Android test build (APK)" \
+            --notes "Built from ${GITHUB_SHA::7}. Open this page on an Android phone, download LekhaWise.apk and open it; allow installing from your browser when asked. For 64-bit ARM phones."

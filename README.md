@@ -206,7 +206,7 @@ Device testing on an Android emulator is described in [e2e/android/README.md](e2
 
 | Route | Cost | Notes |
 |---|---|---|
-| Android APK, shared directly or via GitHub Releases | Free | EAS Build (cloud, free tier) or a local Gradle build. |
+| Android APK, shared directly or via GitHub Releases | Free | The [Android APK](.github/workflows/android-apk.yml) workflow (Actions tab → Run workflow, or `gh workflow run android-apk.yml`) publishes `LekhaWise.apk` on the `android-latest` release, signed with Expo's test key. Or EAS Build (cloud, free tier), or a local Gradle build. |
 | Google Play Store | 25 USD once | One-time developer registration. |
 | iPhone test build, sideloaded | Free | GitHub-hosted Mac build, installed with AltStore or SideStore and a free Apple ID; refreshed every 7 days. |
 | Apple App Store / TestFlight | 99 USD per year | Apple's developer programme is the only unavoidable recurring cost, and only if you publish for iPhone. |
