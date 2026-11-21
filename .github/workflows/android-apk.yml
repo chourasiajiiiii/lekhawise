@@ -61,8 +61,14 @@ jobs:
       - name: Publish as the android-latest download
         env:
           GH_TOKEN: ${{ github.token }}
+        # The release and its tag are kept; each build replaces the file and the notes. (Creating the release from
+        # here can be refused with "Resource not accessible by integration", so that only happens the first time.)
         run: |
-          gh release delete android-latest --yes --cleanup-tag || true
-          gh release create android-latest build/LekhaWise.apk --prerelease --target "$GITHUB_SHA" \
-            --title "Android test build (APK)" \
-            --notes "Built from ${GITHUB_SHA::7}. Open this page on an Android phone, download LekhaWise.apk and open it; allow installing from your browser when asked."
+          NOTES="Built from ${GITHUB_SHA::7}. Open this page on an Android phone, download LekhaWise.apk and open it; allow installing from your browser when asked."
+          if gh release view android-latest > /dev/null 2>&1; then
+            gh release upload android-latest build/LekhaWise.apk --clobber
+            gh release edit android-latest --notes "$NOTES"
+          else
+            gh release create android-latest build/LekhaWise.apk --prerelease --target "$GITHUB_SHA" \
+              --title "Android test build (APK)" --notes "$NOTES"
+          fi
