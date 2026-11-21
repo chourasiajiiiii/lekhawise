@@ -39,10 +39,12 @@ jobs:
         env:
           CI: '1'
 
-      # 64-bit ARM only: every Android phone sold in recent years, and a much faster build than all four ABIs.
+      # All four ABIs. Building React Native for fewer is faster, but prebuilt libraries in the app ship every ABI,
+      # so a device that is not arm64 (32-bit Android Go phones, x86_64 emulators) would install the APK and then
+      # crash at start with "couldn't find DSO to load: libreactnative.so".
       - name: Build the APK
         working-directory: android
-        run: ./gradlew assembleRelease -PreactNativeArchitectures=arm64-v8a --no-daemon
+        run: ./gradlew assembleRelease --no-daemon
 
       - name: Collect the APK
         run: |
@@ -63,4 +65,4 @@ jobs:
           gh release delete android-latest --yes --cleanup-tag || true
           gh release create android-latest build/LekhaWise.apk --prerelease --target "$GITHUB_SHA" \
             --title "Android test build (APK)" \
-            --notes "Built from ${GITHUB_SHA::7}. Open this page on an Android phone, download LekhaWise.apk and open it; allow installing from your browser when asked. For 64-bit ARM phones."
+            --notes "Built from ${GITHUB_SHA::7}. Open this page on an Android phone, download LekhaWise.apk and open it; allow installing from your browser when asked."
