@@ -1,0 +1,51 @@
+name: iPhone sideload build
+
+# Builds LekhaWise for a real iPhone on a GitHub-hosted Mac and publishes it as the "iphone-latest" release, to
+# install with AltStore or SideStore and a free Apple ID. Free for public repositories. Run it from the Actions tab
+# ("Run workflow") or with: gh workflow run iphone-sideload.yml
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: iphone-sideload
+  cancel-in-progress: true
+
+jobs:
+  ipa:
+    runs-on: macos-26
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Build the app for iPhone
+        run: bash scripts/ios-sideload-build.sh
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: iphone-sideload
+          path: |
+            build/LekhaWise.ipa
+            build/sideload/*.log
+            build/sideload/*.txt
+            build/sideload/*.tsv
+          retention-days: 14
+
+      - name: Publish as the iphone-latest download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete iphone-latest --yes --cleanup-tag || true
+          gh release create iphone-latest build/LekhaWise.ipa --prerelease --target "$GITHUB_SHA" \
+            --title "iPhone test build (sideload)" \
+            --notes "Built from ${GITHUB_SHA::7}. Install LekhaWise.ipa with AltStore or SideStore and a free Apple ID: see \"Testing on a real iPhone\" in the README. Apps installed this way must be refreshed every 7 days."

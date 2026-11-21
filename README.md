@@ -148,6 +148,33 @@ On Windows, two limits of the native build tools apply:
   Add `-PreactNativeArchitectures=x86_64` (emulator) or `arm64-v8a` (phone) to the Gradle command to build one
   architecture only, which is much faster.
 
+### Testing on a real iPhone (free, no Mac)
+
+The [iPhone sideload build](.github/workflows/iphone-sideload.yml) workflow builds the full app on a GitHub-hosted
+Mac and publishes it as `LekhaWise.ipa` on the `iphone-latest` release. Start it from the Actions tab ("Run
+workflow") or with `gh workflow run iphone-sideload.yml`; pushing a `v*` tag also runs it. To build it on a Mac
+instead: `bash scripts/ios-sideload-build.sh`.
+
+Install it with [AltStore](https://altstore.io) (open source) and a free Apple ID, from Windows:
+
+1. Install **iTunes** and **iCloud** from apple.com (not the Microsoft Store versions), then **AltServer** for
+   Windows from altstore.io.
+2. Connect the iPhone by USB and trust the computer. In iTunes, tick "Sync with this iPhone over Wi-Fi".
+3. Click the AltServer tray icon → Install AltStore → your iPhone, and sign in with your Apple ID.
+4. On the iPhone: Settings → General → VPN & Device Management → trust your Apple ID; then Settings → Privacy &
+   Security → Developer Mode → on (the phone restarts).
+5. On the iPhone, open the `iphone-latest` release in Safari, download `LekhaWise.ipa`, and open it with AltStore
+   (or AltStore → My Apps → +).
+
+Limits of a free Apple ID: apps stop opening after 7 days until refreshed (data is kept; AltStore refreshes
+automatically while AltServer is running on the same Wi-Fi), at most 3 sideloaded apps including AltStore, and no
+push notifications (the app's reminders are local and still work). The sideloading app renames the app group the
+widget reads, so the widget may show no data in this build. [SideStore](https://sidestore.io) (open source) is an
+alternative that refreshes on the phone without a computer, after a one-time setup from the PC.
+
+The [iPhone](.github/workflows/iphone.yml) workflow also runs every push to `main` in the iPhone simulator with
+Maestro and attaches screenshots and the app log to the run.
+
 ## Checks
 
 ```bash
@@ -181,6 +208,7 @@ Device testing on an Android emulator is described in [e2e/android/README.md](e2
 |---|---|---|
 | Android APK, shared directly or via GitHub Releases | Free | EAS Build (cloud, free tier) or a local Gradle build. |
 | Google Play Store | 25 USD once | One-time developer registration. |
+| iPhone test build, sideloaded | Free | GitHub-hosted Mac build, installed with AltStore or SideStore and a free Apple ID; refreshed every 7 days. |
 | Apple App Store / TestFlight | 99 USD per year | Apple's developer programme is the only unavoidable recurring cost, and only if you publish for iPhone. |
 | Cloud builds (EAS Build) | Free tier | Limited number of builds per month on the free plan; enough for a hobby release cadence. Local builds are always free (iOS local builds need a Mac). |
 
