@@ -39,3 +39,10 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# device test screenshots
+e2e/android/screenshots/
+
+# builds and iPhone simulator test results
+/build
+e2e/ios/results/

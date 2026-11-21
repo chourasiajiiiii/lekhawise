@@ -1,0 +1,7 @@
+{
+  "name": "receipt-ocr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "On-device text recognition for receipt photos: bundled ML Kit model on Android, Apple Vision on iPhone. Works offline.",
+  "main": "index.ts"
+}

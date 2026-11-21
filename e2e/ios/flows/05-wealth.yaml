@@ -1,0 +1,75 @@
+appId: com.lekhawise.app
+name: Loan with EMI and repayment, savings goal, investment, net worth
+---
+- runFlow: common/fresh-start.yaml
+
+# Loan of 100,000 at 12% over 12 months
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "loans/new" } }
+- extendedWaitUntil: { visible: "Interest % a year", timeout: 10000 }
+- inputText: "Car loan"
+- tapOn: { text: "Amount", index: 1 }
+- inputText: "100000"
+- tapOn: { text: "Interest % a year", index: 1 }
+- inputText: "12"
+- tapOn: { text: "Months", index: 1 }
+- inputText: "12"
+- extendedWaitUntil: { visible: "Worked out EMI: \\$8,884\\.88 for 12 months at 12%.*", timeout: 5000 }
+- takeScreenshot: 05-loan-form
+- scrollUntilVisible: { element: "Bank account" }
+- tapOn: "Bank account"
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { visible: "You still owe", timeout: 10000 }
+- assertVisible: "Total interest over the loan"
+- tapOn: "Record a repayment"
+- extendedWaitUntil: { visible: "Reduces the loan by \\$7,884\\.88", timeout: 5000 }
+- scrollUntilVisible: { element: "Bank account" }
+- tapOn: "Bank account"
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { visible: "\\$92,115\\.12", timeout: 10000 }
+- takeScreenshot: 05-loan-after-repayment
+
+# Savings goal of 50,000: add 5,000, take out 1,000
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "goals/new" } }
+- extendedWaitUntil: { visible: "Target amount", timeout: 10000 }
+- inputText: "Trip"
+- tapOn: { text: "Target amount", index: 1 }
+- inputText: "50000"
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { visible: "of \\$50,000\\.00", timeout: 10000 }
+- tapOn: { text: "Amount", index: 1 }
+- inputText: "5000"
+- tapOn: "Add to goal"
+- extendedWaitUntil: { visible: "\\$5,000\\.00", timeout: 5000 }
+- tapOn: "Take money out"
+- tapOn: { text: "Amount", index: 1 }
+- inputText: "1000"
+- tapOn: "Take out of goal"
+- extendedWaitUntil: { visible: "\\$46,000\\.00 to go", timeout: 5000 }
+- takeScreenshot: 05-goal
+
+# Investment of 40,000 now worth 46,000, then 50,000
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "holding/new?kind=investment" } }
+- extendedWaitUntil: { visible: "Amount invested", timeout: 10000 }
+- inputText: "Index fund"
+- tapOn: "Mutual funds"
+- tapOn: { text: "Amount invested", index: 1 }
+- inputText: "40000"
+- tapOn: { text: "Current value \\(leave empty if the same\\)", index: 1 }
+- inputText: "46000"
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { visible: "\\$46,000\\.00", timeout: 10000 }
+- tapOn: { text: "New value", index: 1 }
+- inputText: "50000"
+- tapOn: "Save value"
+- extendedWaitUntil: { visible: "\\$50,000\\.00", timeout: 5000 }
+- takeScreenshot: 05-investment
+
+# Net worth: bank 91,115.12 (loan paid in, one repayment out) + investment 50,000 - loan 92,115.12 = 49,000
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "networth" } }
+- extendedWaitUntil: { visible: "What you own", timeout: 10000 }
+- assertVisible: "\\$49,000\\.00"
+- takeScreenshot: 05-networth

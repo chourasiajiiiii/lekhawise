@@ -1,0 +1,11 @@
+# Starts the app as if just installed: no data, no saved encryption key, every permission granted.
+appId: com.lekhawise.app
+---
+- clearKeychain
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow
+- extendedWaitUntil:
+    visible: "Total balance"
+    timeout: 60000

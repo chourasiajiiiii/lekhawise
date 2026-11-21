@@ -1,0 +1,12 @@
+# Opens a screen of the app through its link, e.g. runFlow with env PATH_TO: "loans/new".
+appId: com.lekhawise.app
+---
+- openLink: "lekhawise://${PATH_TO}"
+# iOS asks once per simulator before an app is opened from a link.
+- runFlow:
+    when:
+      visible: 'Open in .*'
+    commands:
+      - tapOn: "Open"
+- waitForAnimationToEnd:
+    timeout: 3000

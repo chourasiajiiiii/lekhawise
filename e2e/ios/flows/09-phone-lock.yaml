@@ -1,0 +1,21 @@
+appId: com.lekhawise.app
+name: Phone lock with Face ID (run.sh enrols Face ID and answers each prompt with a matching face)
+---
+- runFlow: common/fresh-start.yaml
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "security" } }
+- tapOn: "Phone lock"
+# First use: iOS asks whether the app may use Face ID.
+- runFlow:
+    when:
+      visible: ".*Face ID.*"
+    commands:
+      - tapOn: { text: "OK", optional: true }
+      - tapOn: { text: "Allow", optional: true }
+- extendedWaitUntil: { visible: "Lock again", timeout: 20000 }
+- takeScreenshot: 09-phone-lock-on
+
+# Next start: locked, Face ID is asked for and the app opens
+- stopApp
+- launchApp
+- extendedWaitUntil: { visible: "Total balance", timeout: 30000 }
+- takeScreenshot: 09-unlocked-with-face-id

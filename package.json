@@ -1,22 +1,76 @@
 {
-  "name": "offline-expense-manager",
+  "name": "lekhawise",
   "version": "1.0.0",
-  "main": "index.ts",
-  "dependencies": {
-    "expo": "~58.0.26",
-    "expo-status-bar": "~58.0.5",
-    "react": "19.3.0",
-    "react-native": "0.88.1"
-  },
-  "devDependencies": {
-    "@types/react": "~19.3.0",
-    "typescript": "~6.0.3"
-  },
+  "main": "expo-router/entry",
+  "private": true,
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "lint": "expo lint",
+    "doctor": "expo-doctor",
+    "check": "npm run typecheck && npm run lint && npm test",
+    "i18n:check": "node scripts/translatable-strings.mjs --missing hi"
   },
-  "private": true
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.ts?(x)"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@sentry/react-native|native-base|standard-navigation|@noble))",
+      "/node_modules/react-native-reanimated/plugin/",
+      "/node_modules/@react-native/babel-preset/"
+    ]
+  },
+  "dependencies": {
+    "@expo/ui": "~58.0.29",
+    "@expo/vector-icons": "^15.0.2",
+    "@noble/hashes": "^2.4.0",
+    "@react-native-community/datetimepicker": "9.2.1",
+    "expo": "~58.0.26",
+    "expo-asset": "~58.0.21",
+    "expo-constants": "~58.0.16",
+    "expo-crypto": "~58.0.8",
+    "expo-dev-client": "~58.0.21",
+    "expo-file-system": "~58.0.14",
+    "expo-font": "~58.0.12",
+    "expo-image-manipulator": "~58.0.16",
+    "expo-image-picker": "~58.0.10",
+    "expo-linking": "~58.0.17",
+    "expo-local-authentication": "~58.0.3",
+    "expo-localization": "~58.0.5",
+    "expo-notifications": "~58.1.9",
+    "expo-print": "~58.0.9",
+    "expo-router": "~58.0.32",
+    "expo-screen-capture": "~58.0.6",
+    "expo-secure-store": "~58.0.3",
+    "expo-sharing": "~58.0.23",
+    "expo-sqlite": "~58.0.18",
+    "expo-status-bar": "~58.0.5",
+    "expo-system-ui": "~58.0.7",
+    "expo-widgets": "~58.0.29",
+    "fflate": "^0.8.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-screens": "~4.30.1"
+  },
+  "devDependencies": {
+    "@testing-library/react-native": "^14.1.0",
+    "@types/jest": "30.0.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "~19.3.0",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~58.0.4",
+    "jest": "~30.5.2",
+    "jest-expo": "~58.0.15",
+    "typescript": "~6.0.3"
+  }
 }

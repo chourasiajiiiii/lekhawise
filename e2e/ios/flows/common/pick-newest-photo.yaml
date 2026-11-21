@@ -1,0 +1,49 @@
+# In Apple's photo picker, taps the newest photo (the last thumbnail; the simulator may also hold sample photos).
+appId: com.lekhawise.app
+---
+- extendedWaitUntil:
+    visible: { id: "PXGGridLayout-Info" }
+    timeout: 15000
+    optional: true
+- evalScript: ${output.photoIndex = -1}
+- evalScript: ${output.photoDone = false}
+- repeat:
+    while:
+      true: ${!output.photoDone}
+    commands:
+      - runFlow:
+          when:
+            visible: { id: "PXGGridLayout-Info", index: "${output.photoIndex + 1}" }
+          commands:
+            - evalScript: ${output.photoIndex = output.photoIndex + 1}
+      - runFlow:
+          when:
+            notVisible: { id: "PXGGridLayout-Info", index: "${output.photoIndex + 1}" }
+          commands:
+            - evalScript: ${output.photoDone = true}
+- runFlow:
+    when:
+      true: ${output.photoIndex >= 0}
+    commands:
+      - tapOn: { id: "PXGGridLayout-Info", index: "${output.photoIndex}" }
+# Older picker layout: thumbnails labelled "Photo, <date>".
+- runFlow:
+    when:
+      true: ${output.photoIndex < 0}
+    commands:
+      - evalScript: ${output.photoDone = false}
+      - repeat:
+          while:
+            true: ${!output.photoDone}
+          commands:
+            - runFlow:
+                when:
+                  visible: { text: "Photo, .*", index: "${output.photoIndex + 1}" }
+                commands:
+                  - evalScript: ${output.photoIndex = output.photoIndex + 1}
+            - runFlow:
+                when:
+                  notVisible: { text: "Photo, .*", index: "${output.photoIndex + 1}" }
+                commands:
+                  - evalScript: ${output.photoDone = true}
+      - tapOn: { text: "Photo, .*", index: "${output.photoIndex}" }

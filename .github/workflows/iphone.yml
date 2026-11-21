@@ -1,0 +1,69 @@
+name: iPhone
+
+# Builds the release app for the iPhone simulator on a GitHub-hosted Mac and taps through it with Maestro.
+# Free for public repositories. Results (summary, screenshots, app log) are attached to each run.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      flows:
+        description: Only flows starting with these prefixes, space separated (e.g. "02 07"); empty runs all
+        required: false
+        default: ''
+
+concurrency:
+  group: iphone-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  simulator:
+    runs-on: macos-26
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+
+      # The app only needs rebuilding when something that goes into it changes; test-only changes reuse it.
+      - name: Reuse the app built from the same source
+        id: app
+        uses: actions/cache@v4
+        with:
+          path: build/LekhaWise.app
+          key: iphone-app-${{ hashFiles('package-lock.json', 'app.json', 'tsconfig.json', 'src/**', 'modules/**', 'assets/**', 'e2e/ios/build.sh') }}
+
+      - name: Build the app for the simulator
+        if: steps.app.outputs.cache-hit != 'true'
+        run: bash e2e/ios/build.sh
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Run the app in the iPhone simulator
+        env:
+          MAESTRO_CLI_NO_ANALYTICS: 'true'
+          MAESTRO_DRIVER_STARTUP_TIMEOUT: '240000'
+          FLOWS: ${{ github.event.inputs.flows }}
+        # FLOWS is split into words on purpose (one prefix per word).
+        run: bash e2e/ios/run.sh build/LekhaWise.app $FLOWS
+
+      - name: Summary
+        if: always()
+        run: cat e2e/ios/results/summary.md >> "$GITHUB_STEP_SUMMARY" || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: iphone-results
+          path: e2e/ios/results
+          retention-days: 14
