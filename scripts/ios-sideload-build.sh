@@ -54,7 +54,12 @@ clean_entitlements() {
 
 sign() { # bundle, product name
   local source
-  source=$(awk -F'\t' -v p="$2" '$1 == p { print $2 }' "$OUT/entitlements.tsv")
+  # A product can be listed more than once (one line per target that builds it); the first is the app's own.
+  source=$(awk -F'\t' -v p="$2" '$1 == p { print $2; exit }' "$OUT/entitlements.tsv")
+  if [ -n "$source" ] && [ ! -f "$source" ]; then
+    echo "warning: $source not found; signing $2 without entitlements"
+    source=""
+  fi
   if [ -n "$source" ]; then
     clean_entitlements "$source" "$OUT/$2.entitlements"
     codesign --force --sign - --entitlements "$OUT/$2.entitlements" "$1"
