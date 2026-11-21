@@ -3,7 +3,6 @@ import {
   KeyboardAvoidingView,
   type KeyboardTypeOptions,
   Modal,
-  Platform,
   Pressable,
   StyleSheet,
   type TextInputInstance,
@@ -68,7 +67,7 @@ function PromptBody({
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior="padding"
       style={[styles.backdrop, { backgroundColor: colors.overlay }]}
     >
       <Pressable style={StyleSheet.absoluteFill} onPress={onCancel} accessibilityLabel={t('Close')} />

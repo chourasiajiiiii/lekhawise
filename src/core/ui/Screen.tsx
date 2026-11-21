@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
 
 import { useTheme } from '../theme/theme';
 
@@ -18,10 +18,9 @@ type ScreenProps = {
 export function Screen({ children, scroll = true, overlay }: ScreenProps) {
   const { colors } = useTheme();
   return (
-    <KeyboardAvoidingView
-      style={[styles.flex, { backgroundColor: colors.background }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+    // Android too: apps targeting Android 15+ are drawn edge to edge, so the window no longer shrinks for the
+    // keyboard and the end of a form (its Save button) would stay hidden behind it.
+    <KeyboardAvoidingView style={[styles.flex, { backgroundColor: colors.background }]} behavior="padding">
       {scroll ? (
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
