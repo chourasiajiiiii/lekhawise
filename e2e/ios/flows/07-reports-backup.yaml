@@ -4,131 +4,152 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - runFlow: common/fresh-start.yaml
 
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
-- tapOn: "Income"
-- tapOn: "Amount"
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Income(, .*)?' } }
+- tapOn: '(?s)(.*, )?Income(, .*)?'
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Amount(, .*)?' } }
+- tapOn: '(?s)(.*, )?Amount(, .*)?'
 - inputText: "1000"
-- tapOn: "Category"
-- scrollUntilVisible: { element: "Salary" }
-- tapOn: "Salary"
-- scrollUntilVisible: { element: "Bank account" }
-- tapOn: "Bank account"
-- scrollUntilVisible: { element: "Save" }
-- tapOn: "Save"
-- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
+- tapOn: '(?s)(.*, )?Category(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Salary(, .*)?' }
+- tapOn: '(?s)(.*, )?Salary(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Bank account(, .*)?' }
+- tapOn: '(?s)(.*, )?Bank account(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- tapOn: '(?s)(.*, )?Save(, .*)?'
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - inputText: "250"
-- tapOn: "Category"
-- scrollUntilVisible: { element: "Food & dining" }
-- tapOn: "Food & dining"
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
+- tapOn: '(?s)(.*, )?Category(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
+- tapOn: '(?s)(.*, )?Food & dining(, .*)?'
 # Paid in cash (the form preselects the account used last, the bank)
-- scrollUntilVisible: { element: "Cash" }
-- tapOn: "Cash"
-- scrollUntilVisible: { element: "Save" }
-- tapOn: "Save"
-- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- scrollUntilVisible: { element: '(?s)(.*, )?Cash(, .*)?' }
+- tapOn: '(?s)(.*, )?Cash(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- tapOn: '(?s)(.*, )?Save(, .*)?'
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 
 # Reports for the month and the financial year; the PDF opens the share sheet
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "reports" } }
-- extendedWaitUntil: { visible: "Expenses by category", timeout: 10000 }
-- assertVisible: "75%"
-- tapOn: "Financial year"
-- extendedWaitUntil: { visible: "FY .*", timeout: 5000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Expenses by category(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Financial year(, .*)?' } }
+- tapOn: '(?s)(.*, )?Financial year(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?FY .*(, .*)?', timeout: 5000 }
 - takeScreenshot: 07-reports-year
-- scrollUntilVisible: { element: "Share PDF" }
-- tapOn: "Share PDF"
-- extendedWaitUntil: { visible: "Save to Files", timeout: 30000 }
+- scrollUntilVisible: { element: '(?s)(.*, )?Share PDF(, .*)?' }
+- tapOn: '(?s)(.*, )?Share PDF(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - takeScreenshot: 07-report-pdf-share-sheet
-- tapOn: "Close"
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Close(, .*)?' } }
+- tapOn: '(?s)(.*, )?Close(, .*)?'
 
 # Reconcile cash to -300 (it shows -250): an adjustment of -50 is recorded; then the statement
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "account/acc_cash" } }
-- extendedWaitUntil: { visible: "Reconcile", timeout: 10000 }
-- tapOn: "Reconcile"
-- extendedWaitUntil: { visible: "Reconcile Cash", timeout: 5000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Reconcile(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Reconcile(, .*)?' } }
+- tapOn: '(?s)(.*, )?Reconcile(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Reconcile Cash(, .*)?', timeout: 5000 }
 - eraseText: 12
 - inputText: "-300"
 - tapOn: { text: "Reconcile", index: 1 }
-- extendedWaitUntil: { visible: "Reconciled", timeout: 5000 }
-- assertVisible: "A balance adjustment of -\\$50\\.00 was recorded so the account matches\\."
-- tapOn: "OK"
-- tapOn: "Statement"
-- extendedWaitUntil: { visible: "Closing balance on.*", timeout: 10000 }
-- assertVisible: "-\\$300\\.00"
+- extendedWaitUntil: { visible: '(?s)(.*, )?Reconciled(, .*)?', timeout: 5000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?A balance adjustment of -\$50\.00 was recorded so the account matches\.(, .*)?' } }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
+- tapOn: '(?s)(.*, )?OK(, .*)?'
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Statement(, .*)?' } }
+- tapOn: '(?s)(.*, )?Statement(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Closing balance on.*(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?-\$300\.00(, .*)?' } }
 - takeScreenshot: 07-statement
-- scrollUntilVisible: { element: "Share PDF" }
-- tapOn: "Share PDF"
-- extendedWaitUntil: { visible: "Save to Files", timeout: 30000 }
-- tapOn: "Close"
+- scrollUntilVisible: { element: '(?s)(.*, )?Share PDF(, .*)?' }
+- tapOn: '(?s)(.*, )?Share PDF(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Close(, .*)?' } }
+- tapOn: '(?s)(.*, )?Close(, .*)?'
 
 # Backup saved to Files on the phone
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
-- extendedWaitUntil: { visible: "No backup made yet.", timeout: 10000 }
-- tapOn: "Create backup file"
-- extendedWaitUntil: { visible: "Save to Files", timeout: 30000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?No backup made yet\.(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Create backup file(, .*)?' } }
+- tapOn: '(?s)(.*, )?Create backup file(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - takeScreenshot: 07-backup-share-sheet
-- tapOn: "Save to Files"
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save to Files(, .*)?' } }
+- tapOn: '(?s)(.*, )?Save to Files(, .*)?'
 - waitForAnimationToEnd: { timeout: 5000 }
 - takeScreenshot: 07-files-save
 - runFlow:
     when:
-      visible: "On My iPhone"
+      visible: '(?s)(.*, )?On My iPhone(, .*)?'
     commands:
-      - tapOn: "On My iPhone"
-- tapOn: "Save"
+      - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?On My iPhone(, .*)?' } }
+      - tapOn: '(?s)(.*, )?On My iPhone(, .*)?'
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save(, .*)?' } }
+- tapOn: '(?s)(.*, )?Save(, .*)?'
 - runFlow:
     when:
-      visible: "Replace"
+      visible: '(?s)(.*, )?Replace(, .*)?'
     commands:
-      - tapOn: "Replace"
-- extendedWaitUntil: { visible: "Last backup file created: .*", timeout: 10000 }
+      - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Replace(, .*)?' } }
+      - tapOn: '(?s)(.*, )?Replace(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Last backup file created: .*(, .*)?', timeout: 10000 }
 
 # More data after the backup ...
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - inputText: "222"
-- tapOn: "Category"
-- scrollUntilVisible: { element: "Shopping" }
-- tapOn: "Shopping"
-- scrollUntilVisible: { element: "Optional" }
-- tapOn: "Optional"
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
+- tapOn: '(?s)(.*, )?Category(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Shopping(, .*)?' }
+- tapOn: '(?s)(.*, )?Shopping(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Optional(, .*)?' }
+- tapOn: '(?s)(.*, )?Optional(, .*)?'
 - inputText: "Shoes"
-- scrollUntilVisible: { element: "Save" }
-- tapOn: "Save"
-- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- tapOn: '(?s)(.*, )?Save(, .*)?'
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
-- extendedWaitUntil: { visible: "4 entries", timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?4 entries(, .*)?', timeout: 10000 }
 
 # ... is gone again after restoring the backup picked from Files
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
-- scrollUntilVisible: { element: "Choose backup file" }
-- tapOn: "Choose backup file"
+- scrollUntilVisible: { element: '(?s)(.*, )?Choose backup file(, .*)?' }
+- tapOn: '(?s)(.*, )?Choose backup file(, .*)?'
 - waitForAnimationToEnd: { timeout: 5000 }
 - takeScreenshot: 07-file-picker
 - runFlow:
     when:
-      notVisible: "lekhawise-backup.*"
+      notVisible: '(?s)(.*, )?lekhawise-backup.*(, .*)?'
     commands:
-      - tapOn: { text: "Browse", optional: true }
-      - tapOn: { text: "On My iPhone", optional: true }
-- tapOn: "lekhawise-backup.*"
-- extendedWaitUntil: { visible: "Restore this backup", timeout: 10000 }
+      - tapOn: { text: '(?s)(.*, )?Browse(, .*)?', optional: true }
+      - tapOn: { text: '(?s)(.*, )?On My iPhone(, .*)?', optional: true }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?lekhawise-backup.*(, .*)?' } }
+- tapOn: '(?s)(.*, )?lekhawise-backup.*(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Restore this backup(, .*)?', timeout: 10000 }
 - takeScreenshot: 07-restore-preview
-- tapOn: "Restore this backup"
-- extendedWaitUntil: { visible: "Replace all data\\?", timeout: 5000 }
-- tapOn: "Replace"
-- extendedWaitUntil: { visible: "Restored", timeout: 10000 }
-- tapOn: "OK"
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Restore this backup(, .*)?' } }
+- tapOn: '(?s)(.*, )?Restore this backup(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Replace all data\?(, .*)?', timeout: 5000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Replace(, .*)?' } }
+- tapOn: '(?s)(.*, )?Replace(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Restored(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
+- tapOn: '(?s)(.*, )?OK(, .*)?'
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
-- extendedWaitUntil: { visible: "3 entries", timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?3 entries(, .*)?', timeout: 10000 }
 - assertNotVisible: ".*Shoes.*"
 - takeScreenshot: 07-after-restore
 
 # CSV export opens the share sheet
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
-- scrollUntilVisible: { element: "Share CSV" }
-- tapOn: "Share CSV"
-- extendedWaitUntil: { visible: "Save to Files", timeout: 30000 }
+- scrollUntilVisible: { element: '(?s)(.*, )?Share CSV(, .*)?' }
+- tapOn: '(?s)(.*, )?Share CSV(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - takeScreenshot: 07-csv-share-sheet
-- tapOn: "Close"
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Close(, .*)?' } }
+- tapOn: '(?s)(.*, )?Close(, .*)?'

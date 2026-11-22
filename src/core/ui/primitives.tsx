@@ -49,9 +49,25 @@ export function SectionTitle({ children, right }: { children: ReactNode; right?:
   );
 }
 
+/**
+ * Ionicons glyph that screen readers skip unless it has its own accessibilityLabel. iOS reads a button as the text of
+ * all its children joined with commas, and an icon's text is an invisible font character, so without this a button
+ * "Save" with an icon is read as ", Save".
+ */
+export function Glyph(props: ComponentProps<typeof Ionicons>) {
+  const hidden = !props.accessibilityLabel;
+  return (
+    <Ionicons
+      accessibilityElementsHidden={hidden}
+      importantForAccessibility={hidden ? 'no-hide-descendants' : 'auto'}
+      {...props}
+    />
+  );
+}
+
 export function Icon({ name, size = 20, color }: { name: IconName; size?: number; color?: string }) {
   const { colors } = useTheme();
-  return <Ionicons name={name} size={size} color={color ?? colors.text} />;
+  return <Glyph name={name} size={size} color={color ?? colors.text} />;
 }
 
 /** Coloured circle with an icon, used for categories and accounts. */
@@ -67,7 +83,7 @@ export function IconBadge({ name, color, size = 40 }: { name: IconName; color: s
         justifyContent: 'center',
       }}
     >
-      <Ionicons name={name} size={size * 0.5} color={color} />
+      <Glyph name={name} size={size * 0.5} color={color} />
     </View>
   );
 }
@@ -86,7 +102,7 @@ export function EmptyState({ icon, title, message }: { icon: IconName; title: st
   const { colors } = useTheme();
   return (
     <View style={styles.empty}>
-      <Ionicons name={icon} size={44} color={colors.textMuted} />
+      <Glyph name={icon} size={44} color={colors.textMuted} />
       <AppText variant="heading" style={styles.emptyTitle}>
         {title}
       </AppText>

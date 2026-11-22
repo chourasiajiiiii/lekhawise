@@ -1,0 +1,13 @@
+# Brings TEXT on screen: waits briefly for it to appear, then scrolls down until it is fully visible. iOS leaves what
+# is off screen out of the screen tree, so a check or tap on the lower part of a long screen needs this first.
+# runFlow with env TEXT: a text pattern, e.g. '(?s)(.*, )?Save(, .*)?'.
+appId: com.lekhawise.app
+---
+- extendedWaitUntil:
+    visible: "${TEXT}"
+    timeout: 5000
+    optional: true
+- scrollUntilVisible:
+    element: "${TEXT}"
+    direction: DOWN
+    timeout: 20000

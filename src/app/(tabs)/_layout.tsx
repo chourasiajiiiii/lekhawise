@@ -1,14 +1,13 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router/js-tabs';
 import { type ColorValue, Text } from 'react-native';
 
 import { useT } from '@/core/i18n/locale';
 import { useTheme } from '@/core/theme/theme';
-import type { IconName } from '@/core/ui';
+import { Glyph, type IconName } from '@/core/ui';
 
 function tabIcon(name: IconName) {
   return function TabIcon({ color, size }: { color: ColorValue; size: number }) {
-    return <Ionicons name={name} color={typeof color === 'string' ? color : undefined} size={size} />;
+    return <Glyph name={name} color={typeof color === 'string' ? color : undefined} size={size} />;
   };
 }
 

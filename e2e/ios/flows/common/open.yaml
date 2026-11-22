@@ -5,8 +5,8 @@ appId: com.lekhawise.app
 # iOS asks once per simulator before an app is opened from a link.
 - runFlow:
     when:
-      visible: 'Open in .*'
+      visible: '(?s)(.*, )?Open in .*(, .*)?'
     commands:
-      - tapOn: "Open"
+      - tapOn: '(?s)(.*, )?Open(, .*)?'
 - waitForAnimationToEnd:
     timeout: 3000

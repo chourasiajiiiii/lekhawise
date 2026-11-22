@@ -5,24 +5,28 @@ name: Receipt scanning of a photo stored sideways with an orientation flag (as t
 - addMedia:
     - "../media/receipt-us-rotated.jpg"
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
-- tapOn: "Scan a receipt"
-- tapOn: "Choose from gallery"
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Scan a receipt(, .*)?' } }
+- tapOn: '(?s)(.*, )?Scan a receipt(, .*)?'
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Choose from gallery(, .*)?' } }
+- tapOn: '(?s)(.*, )?Choose from gallery(, .*)?'
 - runFlow: common/pick-newest-photo.yaml
-- extendedWaitUntil: { visible: "Receipt read", timeout: 60000 }
-- assertVisible: "Check the amount, date and note, then choose a category."
-- tapOn: "OK"
+- extendedWaitUntil: { visible: '(?s)(.*, )?Receipt read(, .*)?', timeout: 60000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Check the amount, date and note, then choose a category\.(, .*)?' } }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
+- tapOn: '(?s)(.*, )?OK(, .*)?'
 # The form fields (checked again in the saved entry below)
-- assertVisible: { text: "32.25", optional: true }
-- assertVisible: { text: "HARBOR FRESH MARKET", optional: true }
+- assertVisible: { text: '(?s)(.*, )?32\.25(, .*)?', optional: true }
+- assertVisible: { text: '(?s)(.*, )?HARBOR FRESH MARKET(, .*)?', optional: true }
 - takeScreenshot: 03-form-filled
-- tapOn: "Category"
-- scrollUntilVisible: { element: "Groceries" }
-- tapOn: "Groceries"
-- scrollUntilVisible: { element: "Save" }
-- tapOn: "Save"
-- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
+- tapOn: '(?s)(.*, )?Category(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Groceries(, .*)?' }
+- tapOn: '(?s)(.*, )?Groceries(, .*)?'
+- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- tapOn: '(?s)(.*, )?Save(, .*)?'
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
-- extendedWaitUntil: { visible: "1 entry", timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?1 entry(, .*)?', timeout: 10000 }
 - assertVisible: ".*HARBOR FRESH MARKET.*"
 - assertVisible: '.*32\.25.*'

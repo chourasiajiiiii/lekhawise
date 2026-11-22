@@ -7,5 +7,5 @@ appId: com.lekhawise.app
     permissions:
       all: allow
 - extendedWaitUntil:
-    visible: "Total balance.*"
+    visible: '(?s)(.*, )?Total balance.*(, .*)?'
     timeout: 60000

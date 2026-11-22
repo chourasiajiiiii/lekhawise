@@ -3,26 +3,30 @@ name: Home-screen widget added from the widget gallery (best effort; the home sc
 ---
 # Expects data from an earlier flow; opening the app refreshes the widget.
 - launchApp
-- extendedWaitUntil: { visible: "Total balance.*", timeout: 30000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Total balance.*(, .*)?', timeout: 30000 }
 - pressKey: Home
 - waitForAnimationToEnd: { timeout: 3000 }
-- longPressOn: { point: "50%,50%" }
+# iOS 26: long-press an app icon and choose Edit Home Screen (a long press on the wallpaper does nothing
+# under Maestro); older versions go straight into edit mode.
+- longPressOn: "LekhaWise"
+- waitForAnimationToEnd: { timeout: 3000 }
+- tapOn: { text: "Edit Home Screen", optional: true }
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: 10-home-edit-mode
-- tapOn: { text: "Edit", optional: true }
-- tapOn: { text: "Add Widget", optional: true }
-- tapOn: { text: "Add widget", optional: true }
+- tapOn: { text: '(?s)(.*, )?Edit(, .*)?', optional: true }
+- tapOn: { text: '(?s)(.*, )?Add Widget(, .*)?', optional: true }
+- tapOn: { text: '(?s)(.*, )?Add widget(, .*)?', optional: true }
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: 10-widget-gallery
-- tapOn: { text: "Search Widgets", optional: true }
+- tapOn: { text: '(?s)(.*, )?Search Widgets(, .*)?', optional: true }
 - inputText: "LekhaWise"
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: { text: "LekhaWise", index: 0 }
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: 10-widget-preview
-- tapOn: "Add Widget"
+- tapOn: '(?s)(.*, )?Add Widget(, .*)?'
 - waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: { text: "Done", optional: true }
+- tapOn: { text: '(?s)(.*, )?Done(, .*)?', optional: true }
 - waitForAnimationToEnd: { timeout: 5000 }
 - takeScreenshot: 10-widget-on-home-screen
 - assertVisible: ".*Spent today.*"

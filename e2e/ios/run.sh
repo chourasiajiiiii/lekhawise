@@ -77,6 +77,8 @@ run_flow() {
     pass "flow $name ($((SECONDS - started)) s)"
   else
     fail "flow $name ($((SECONDS - started)) s): $(grep -E 'FAILED|Element not found|Assertion is false|not found' "$dir/maestro.txt" | head -3 | tr '\n' ' ')"
+    # What was on screen when it failed (a row is one element on iOS, so this shows the full labels to match).
+    maestro --device "$UDID" hierarchy > "$dir/failure-hierarchy.json" 2> /dev/null
   fi
   find "$dir" -name '*.png' -exec cp {} "$OUT/screens/" \; 2>/dev/null
 }

@@ -1,9 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { t } from '@/core/i18n/locale';
 import { PALETTE, PALETTE_NAMES, useTheme } from '@/core/theme/theme';
-import type { IconName } from '@/core/ui';
+import { Glyph, type IconName } from '@/core/ui';
 
 import { ICON_CHOICES } from '../defaults';
 
@@ -49,7 +48,7 @@ export function AppearancePicker({
                 { backgroundColor: selected ? `${color}33` : colors.surface, borderColor: selected ? color : colors.border },
               ]}
             >
-              <Ionicons name={name} size={22} color={selected ? color : colors.textMuted} />
+              <Glyph name={name} size={22} color={selected ? color : colors.textMuted} />
             </Pressable>
           );
         })}

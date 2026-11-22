@@ -1,9 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { t } from '../i18n/locale';
 import { useTheme } from '../theme/theme';
-import { AppText } from '../ui/primitives';
+import { AppText, Glyph } from '../ui/primitives';
 import { PIN_MAX_LENGTH } from './pin';
 
 type PinPadProps = {
@@ -59,7 +58,7 @@ export function PinPad({ value, onChange, length, disabled, extraKey }: PinPadPr
             onPress={extraKey.onPress}
             style={({ pressed }) => [styles.key, { opacity: pressed ? 0.5 : 1 }]}
           >
-            <Ionicons name={extraKey.icon} size={30} color={colors.primary} />
+            <Glyph name={extraKey.icon} size={30} color={colors.primary} />
           </Pressable>
         ) : (
           <View style={styles.key} />
@@ -71,7 +70,7 @@ export function PinPad({ value, onChange, length, disabled, extraKey }: PinPadPr
           onPress={() => onChange(value.slice(0, -1))}
           style={({ pressed }) => [styles.key, { opacity: pressed ? 0.5 : 1 }]}
         >
-          <Ionicons name="backspace-outline" size={28} color={colors.text} />
+          <Glyph name="backspace-outline" size={28} color={colors.text} />
         </Pressable>
       </View>
     </View>

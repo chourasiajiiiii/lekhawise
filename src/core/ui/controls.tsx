@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import type { ReactNode, Ref } from 'react';
 import {
   ActivityIndicator,
@@ -12,7 +11,7 @@ import {
 } from 'react-native';
 
 import { useTheme } from '../theme/theme';
-import { AppText, type IconName } from './primitives';
+import { AppText, Glyph, type IconName } from './primitives';
 
 type ButtonProps = {
   title: string;
@@ -52,7 +51,7 @@ export function Button({ title, onPress, variant = 'primary', icon, disabled, lo
         <ActivityIndicator color={fg} />
       ) : (
         <>
-          {icon ? <Ionicons name={icon} size={18} color={fg} /> : null}
+          {icon ? <Glyph name={icon} size={18} color={fg} /> : null}
           <AppText variant="label" color={fg} style={styles.buttonText}>
             {title}
           </AppText>
@@ -141,7 +140,7 @@ export function Chip({ label, selected, onPress, icon, color }: ChipProps) {
         },
       ]}
     >
-      {icon ? <Ionicons name={icon} size={16} color={selected ? accent : colors.textMuted} /> : null}
+      {icon ? <Glyph name={icon} size={16} color={selected ? accent : colors.textMuted} /> : null}
       <AppText variant="caption" color={selected ? colors.text : colors.textMuted} numberOfLines={1}>
         {label}
       </AppText>
@@ -182,7 +181,7 @@ export function ListRow({ title, subtitle, left, right, onPress, onLongPress, ch
         ) : null}
       </View>
       {right}
-      {chevron ? <Ionicons name="chevron-forward" size={18} color={colors.textMuted} /> : null}
+      {chevron ? <Glyph name="chevron-forward" size={18} color={colors.textMuted} /> : null}
     </Pressable>
   );
 }
@@ -231,7 +230,7 @@ export function Fab({ onPress, label = 'Add' }: { onPress: () => void; label?: s
       onPress={onPress}
       style={({ pressed }) => [styles.fab, { backgroundColor: colors.primary, opacity: pressed ? 0.85 : 1 }]}
     >
-      <Ionicons name="add" size={30} color={colors.primaryText} />
+      <Glyph name="add" size={30} color={colors.primaryText} />
     </Pressable>
   );
 }

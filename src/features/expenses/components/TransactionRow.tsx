@@ -1,10 +1,9 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { useT } from '@/core/i18n/locale';
 import { useTheme } from '@/core/theme/theme';
-import { IconBadge, ListRow } from '@/core/ui';
+import { Glyph, IconBadge, ListRow } from '@/core/ui';
 
 import type { TransactionView } from '../types';
 import { Amount } from './Money';
@@ -45,7 +44,7 @@ export function TransactionRow({ tx, showDate, selected, onPress, onLongPress }:
       left={
         selecting ? (
           <View style={styles.check}>
-            <Ionicons
+            <Glyph
               name={selected ? 'checkmark-circle' : 'ellipse-outline'}
               size={28}
               color={selected ? colors.primary : colors.textMuted}
@@ -64,7 +63,7 @@ export function TransactionRow({ tx, showDate, selected, onPress, onLongPress }:
       right={
         <View style={styles.right}>
           {tx.attachment_count > 0 ? (
-            <Ionicons name="attach" size={16} color={colors.textMuted} accessibilityLabel={t('Has a photo')} />
+            <Glyph name="attach" size={16} color={colors.textMuted} accessibilityLabel={t('Has a photo')} />
           ) : null}
           <Amount amount={tx.amount} type={tx.type} />
         </View>
