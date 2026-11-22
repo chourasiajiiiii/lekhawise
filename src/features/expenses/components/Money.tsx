@@ -73,8 +73,9 @@ export function MoneyField({
   const { currency, keyboard } = useAmountFormat();
   return (
     <View style={styles.wrap}>
+      {/* Hidden from VoiceOver: the field below carries the same label, which would otherwise be read twice. */}
       {label ? (
-        <AppText variant="caption" muted style={styles.label}>
+        <AppText variant="caption" muted style={styles.label} accessibilityElementsHidden>
           {label}
         </AppText>
       ) : null}

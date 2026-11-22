@@ -1,0 +1,14 @@
+# Like find.yaml, but scrolls up: a tab screen keeps its scroll position (the home screen after a form is saved), so
+# the text may be above. Not for forms, which are sheets that a downward drag at the top would close.
+appId: com.lekhawise.app
+---
+- extendedWaitUntil:
+    visible: "${TEXT}"
+    timeout: 5000
+    optional: true
+- scrollUntilVisible:
+    element: "${TEXT}"
+    direction: UP
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000

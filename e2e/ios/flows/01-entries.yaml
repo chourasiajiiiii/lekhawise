@@ -50,8 +50,8 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 
 # Home: totals, savings rate, recent list
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } }
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?savings rate(, .*)?' } }
+- runFlow: { file: common/find-above.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } }
+- runFlow: { file: common/find-above.yaml, env: { TEXT: '(?s)(.*, )?savings rate(, .*)?' } }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Lunch(, .*)?' } }
 - assertVisible: ".*750\\.00.*"
 - takeScreenshot: 01-home-totals

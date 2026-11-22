@@ -14,6 +14,7 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - tapOn: '(?s)(.*, )?Split into several categories(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category for part 1(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category for part 1(, .*)?'
+- waitForAnimationToEnd: { timeout: 3000 } # the category list slides up
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Groceries(, .*)?' } }
 - tapOn: '(?s)(.*, )?Groceries(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Amount for part 1(, .*)?' } }
@@ -23,6 +24,7 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category for part 2(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category for part 2(, .*)?'
+- waitForAnimationToEnd: { timeout: 3000 } # the category list slides up
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Personal care(, .*)?' } }
 - tapOn: '(?s)(.*, )?Personal care(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?\$300\.00 left to assign(, .*)?', timeout: 5000 }
