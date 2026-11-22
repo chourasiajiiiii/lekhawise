@@ -9,3 +9,15 @@ appId: com.lekhawise.app
 - extendedWaitUntil:
     visible: '(?s)(.*, )?Total balance.*(, .*)?'
     timeout: 60000
+    optional: true
+# A late "Open in LekhaWise?" prompt from an earlier link stays on screen across launches and hides the app.
+- runFlow:
+    when:
+      visible: '(?s)(.*, )?Open in .*(, .*)?'
+    commands:
+      - tapOn: '(?s)(.*, )?Cancel(, .*)?'
+      - waitForAnimationToEnd:
+          timeout: 2000
+- extendedWaitUntil:
+    visible: '(?s)(.*, )?Total balance.*(, .*)?'
+    timeout: 30000
