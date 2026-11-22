@@ -7,17 +7,19 @@ name: Loan with EMI and repayment, savings goal, investment, net worth
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "loans/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Interest % a year(, .*)?', timeout: 10000 }
 - inputText: "Car loan"
-- tapOn: { text: "Amount", index: 1 }
+- tapOn: "Amount"
 - inputText: "100000"
-- tapOn: { text: "Interest % a year", index: 1 }
+- tapOn: "Interest % a year"
 - inputText: "12"
-- tapOn: { text: "Months", index: 1 }
+- tapOn: "Months"
 - inputText: "12"
 - extendedWaitUntil: { visible: '(?s)(.*, )?Worked out EMI: \$8,884\.88 for 12 months at 12%.*(, .*)?', timeout: 5000 }
 - takeScreenshot: 05-loan-form
 - scrollUntilVisible: { element: '(?s)(.*, )?Bank account(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Bank account(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?You still owe(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Total interest over the loan(, .*)?' } }
@@ -25,8 +27,10 @@ name: Loan with EMI and repayment, savings goal, investment, net worth
 - tapOn: '(?s)(.*, )?Record a repayment(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Reduces the loan by \$7,884\.88(, .*)?', timeout: 5000 }
 - scrollUntilVisible: { element: '(?s)(.*, )?Bank account(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Bank account(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?\$92,115\.12(, .*)?', timeout: 10000 }
 - takeScreenshot: 05-loan-after-repayment
@@ -35,19 +39,20 @@ name: Loan with EMI and repayment, savings goal, investment, net worth
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "goals/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Target amount(, .*)?', timeout: 10000 }
 - inputText: "Trip"
-- tapOn: { text: "Target amount", index: 1 }
+- tapOn: "Target amount"
 - inputText: "50000"
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?of \$50,000\.00(, .*)?', timeout: 10000 }
-- tapOn: { text: "Amount", index: 1 }
+- tapOn: "Amount"
 - inputText: "5000"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Add to goal(, .*)?' } }
 - tapOn: '(?s)(.*, )?Add to goal(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?\$5,000\.00(, .*)?', timeout: 5000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Take money out(, .*)?' } }
 - tapOn: '(?s)(.*, )?Take money out(, .*)?'
-- tapOn: { text: "Amount", index: 1 }
+- tapOn: "Amount"
 - inputText: "1000"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Take out of goal(, .*)?' } }
 - tapOn: '(?s)(.*, )?Take out of goal(, .*)?'
@@ -60,14 +65,15 @@ name: Loan with EMI and repayment, savings goal, investment, net worth
 - inputText: "Index fund"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Mutual funds(, .*)?' } }
 - tapOn: '(?s)(.*, )?Mutual funds(, .*)?'
-- tapOn: { text: "Amount invested", index: 1 }
+- tapOn: "Amount invested"
 - inputText: "40000"
-- tapOn: { text: "Current value \\(leave empty if the same\\)", index: 1 }
+- tapOn: "Current value \\(leave empty if the same\\)"
 - inputText: "46000"
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?\$46,000\.00(, .*)?', timeout: 10000 }
-- tapOn: { text: "New value", index: 1 }
+- tapOn: "New value"
 - inputText: "50000"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save value(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save value(, .*)?'

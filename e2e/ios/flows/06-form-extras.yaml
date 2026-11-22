@@ -28,8 +28,9 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - extendedWaitUntil: { visible: '(?s)(.*, )?Adds up(, .*)?', timeout: 5000 }
 - takeScreenshot: 06-split
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 
 # A tagged entry, saved as a template, then reused
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
@@ -38,17 +39,21 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Transport(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Transport(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?New tag(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?New tag(, .*)?'
 - inputText: "Commute"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?#Commute(, .*)?', timeout: 5000 }
 - scrollUntilVisible: { element: '(?s)(.*, )?Optional(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Optional(, .*)?'
 - inputText: "Metro card"
 - scrollUntilVisible: { element: '(?s)(.*, )?Save as template(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save as template(, .*)?'
 - inputText: "Metro"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save(, .*)?' } }
@@ -57,8 +62,9 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
 - tapOn: '(?s)(.*, )?OK(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 
 # The template fills the form; saving the same again warns about a duplicate
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
@@ -68,12 +74,13 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Metro card(, .*)?' } }
 - takeScreenshot: 06-template-applied
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Possible duplicate(, .*)?', timeout: 5000 }
 - takeScreenshot: 06-duplicate-warning
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save anyway(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save anyway(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?3 entries(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?#Commute(, .*)?' } }
@@ -93,22 +100,26 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Others owe me part of this(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Others owe me part of this(, .*)?'
 - tapOn: { text: "Name", index: 0 }
 - inputText: "Asha"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Add person(, .*)?' } }
 - tapOn: '(?s)(.*, )?Add person(, .*)?'
-- tapOn: { text: "Name", index: 1 }
+- tapOn: "Name"
 - inputText: "Ben"
 - scrollUntilVisible: { element: '(?s)(.*, )?Split equally(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Split equally(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Your share: \$300\.00(, .*)?', timeout: 5000 }
 - takeScreenshot: 06-bill-split
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "loans" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Asha(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Ben(, .*)?' } }

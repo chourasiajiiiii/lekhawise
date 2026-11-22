@@ -67,8 +67,9 @@ export function TextField({ label, style, ...rest }: TextFieldProps) {
   const { colors } = useTheme();
   return (
     <View style={styles.field}>
+      {/* Hidden from VoiceOver: the field below carries the same label, which would otherwise be read twice. */}
       {label ? (
-        <AppText variant="caption" muted style={styles.fieldLabel}>
+        <AppText variant="caption" muted style={styles.fieldLabel} accessibilityElementsHidden>
           {label}
         </AppText>
       ) : null}

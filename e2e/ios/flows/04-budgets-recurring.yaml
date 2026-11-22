@@ -23,18 +23,22 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - inputText: "400"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Over budget: Food & dining(, .*)?', timeout: 10000 }
 - takeScreenshot: 04-over-budget-alert
@@ -53,7 +57,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?\$1,100\.00 of \$500\.00(, .*)?', timeout: 5000 }
-- tapOn: { text: "All spending", index: 1 }
+- tapOn: '(?s)All spending, .*'
 - extendedWaitUntil: { visible: '(?s)(.*, )?over budget(, .*)?', timeout: 5000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?\$600\.00(, .*)?' } }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Carry unspent money forward(, .*)?' } }
@@ -67,13 +71,17 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Entertainment(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Entertainment(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Optional(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Optional(, .*)?'
 - inputText: "Streaming"
 - scrollUntilVisible: { element: '(?s)(.*, )?Monthly(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Monthly(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - runFlow:
     when:
@@ -81,7 +89,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
     commands:
       - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
       - tapOn: '(?s)(.*, )?OK(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "recurring" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Streaming(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Monthly · next.*(, .*)?' } }

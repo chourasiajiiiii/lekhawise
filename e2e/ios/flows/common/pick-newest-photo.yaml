@@ -30,6 +30,7 @@ appId: com.lekhawise.app
 - runFlow:
     when:
       true: ${output.photoIndex < 0}
+      visible: '(?s)(.*, )?Photo, .*(, .*)?'
     commands:
       - evalScript: ${output.photoDone = false}
       - repeat:
@@ -47,3 +48,12 @@ appId: com.lekhawise.app
                 commands:
                   - evalScript: ${output.photoDone = true}
       - tapOn: { text: "Photo, .*", index: "${output.photoIndex}" }
+# iOS 26: the picker runs in its own process and shows nothing in the screen tree. Newest photos come first, so the
+# newest is the top-left thumbnail.
+- runFlow:
+    when:
+      true: ${output.photoIndex < 0}
+      notVisible: '(?s)(.*, )?Photo, .*(, .*)?'
+    commands:
+      - waitForAnimationToEnd: { timeout: 3000 }
+      - tapOn: { point: "16%,25%" }

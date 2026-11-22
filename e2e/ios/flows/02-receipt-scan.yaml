@@ -2,8 +2,6 @@ appId: com.lekhawise.app
 name: Receipt scanning from the photo library (upright photo)
 ---
 - runFlow: common/fresh-start.yaml
-- addMedia:
-    - "../media/receipt-us.png"
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Scan a receipt(, .*)?' } }
@@ -24,10 +22,12 @@ name: Receipt scanning from the photo library (upright photo)
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Groceries(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Groceries(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?1 entry(, .*)?', timeout: 10000 }
 - assertVisible: ".*HARBOR FRESH MARKET.*"

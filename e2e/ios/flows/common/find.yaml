@@ -11,3 +11,5 @@ appId: com.lekhawise.app
     element: "${TEXT}"
     direction: DOWN
     timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000

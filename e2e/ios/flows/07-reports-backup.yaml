@@ -13,35 +13,42 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Salary(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Salary(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Bank account(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Bank account(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
 - inputText: "250"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
 # Paid in cash (the form preselects the account used last, the bank)
 - scrollUntilVisible: { element: '(?s)(.*, )?Cash(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Cash(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 
 # Reports for the month and the financial year; the PDF opens the share sheet
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "reports" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Expenses by category(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Expenses by category(, .*)?' } }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Financial year(, .*)?' } }
 - tapOn: '(?s)(.*, )?Financial year(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?FY .*(, .*)?', timeout: 5000 }
 - takeScreenshot: 07-reports-year
 - scrollUntilVisible: { element: '(?s)(.*, )?Share PDF(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Share PDF(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - takeScreenshot: 07-report-pdf-share-sheet
@@ -67,6 +74,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?-\$300\.00(, .*)?' } }
 - takeScreenshot: 07-statement
 - scrollUntilVisible: { element: '(?s)(.*, )?Share PDF(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Share PDF(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Close(, .*)?' } }
@@ -106,19 +114,23 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Shopping(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Shopping(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Optional(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Optional(, .*)?'
 - inputText: "Shoes"
 - scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?4 entries(, .*)?', timeout: 10000 }
 
 # ... is gone again after restoring the backup picked from Files
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
 - scrollUntilVisible: { element: '(?s)(.*, )?Choose backup file(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Choose backup file(, .*)?'
 - waitForAnimationToEnd: { timeout: 5000 }
 - takeScreenshot: 07-file-picker
@@ -148,6 +160,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 # CSV export opens the share sheet
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
 - scrollUntilVisible: { element: '(?s)(.*, )?Share CSV(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Share CSV(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - takeScreenshot: 07-csv-share-sheet
