@@ -1,0 +1,9 @@
+# Types AMOUNT into the main amount field of the transaction form. The field takes focus by itself as the form
+# opens, but keys typed while the sheet is still sliding up get lost, so wait, tap it, clear it and then type.
+appId: com.lekhawise.app
+---
+- waitForAnimationToEnd: { timeout: 3000 }
+- tapOn: '(?s)(.*, )?Amount(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
+- eraseText: 12
+- inputText: ${AMOUNT}

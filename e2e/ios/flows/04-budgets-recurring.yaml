@@ -26,7 +26,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 # Spending 700 then 400 goes over it, with an alert
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "700"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "700" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
@@ -37,7 +37,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "400"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "400" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
@@ -73,7 +73,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 # A monthly recurring entry
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "15"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "15" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'

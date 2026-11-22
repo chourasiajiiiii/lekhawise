@@ -30,7 +30,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 # Expense of 250 with a note
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "250"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "250" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
@@ -52,9 +52,9 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 # Home: totals, savings rate, recent list
 - runFlow: { file: common/find-above.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } }
 - runFlow: { file: common/find-above.yaml, env: { TEXT: '(?s)(.*, )?savings rate(, .*)?' } }
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Lunch(, .*)?' } }
-- assertVisible: ".*750\\.00.*"
+- runFlow: { file: common/find-above.yaml, env: { TEXT: ".*750\\.00.*" } }
 - takeScreenshot: 01-home-totals
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Lunch(, .*)?' } }
 
 # Transfer 300 from the bank to cash
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }

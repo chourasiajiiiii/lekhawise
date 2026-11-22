@@ -6,7 +6,7 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 # One payment of 1000 split across two categories
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "1000"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "1000" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
@@ -40,7 +40,7 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 # A tagged entry, saved as a template, then reused
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "20"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "20" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
@@ -102,7 +102,7 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 # A dinner of 900 split equally with two friends
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "900"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "900" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'

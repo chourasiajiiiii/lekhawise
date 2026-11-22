@@ -24,7 +24,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "250"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "250" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
@@ -61,7 +61,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - extendedWaitUntil: { visible: '(?s)(.*, )?Reconcile Cash(, .*)?', timeout: 5000 }
 - eraseText: 12
 - inputText: "-300"
-- tapOn: { text: "Reconcile", index: 1 }
+- tapOn: { text: "Reconcile", rightOf: "Cancel" }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Reconciled(, .*)?', timeout: 5000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?A balance adjustment of -\$50\.00 was recorded so the account matches\.(, .*)?' } }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
@@ -107,7 +107,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 # More data after the backup ...
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
-- inputText: "222"
+- runFlow: { file: common/type-amount.yaml, env: { AMOUNT: "222" } }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
