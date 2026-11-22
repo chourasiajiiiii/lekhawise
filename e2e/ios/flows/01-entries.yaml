@@ -83,7 +83,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?3 entries(, .*)?', timeout: 10000 }
 - tapOn: ".*Lunch.*"
-- extendedWaitUntil: { visible: '(?s)(.*, )?Save changes(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Edit transaction(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Amount(, .*)?' } }
 - tapOn: '(?s)(.*, )?Amount(, .*)?'
 - eraseText: 10
@@ -106,7 +106,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 
 # Delete it
 - tapOn: ".*Lunch.*"
-- extendedWaitUntil: { visible: '(?s)(.*, )?Save changes(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Edit transaction(, .*)?', timeout: 10000 }
 - scrollUntilVisible: { element: '(?s)(.*, )?Delete(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Delete(, .*)?'

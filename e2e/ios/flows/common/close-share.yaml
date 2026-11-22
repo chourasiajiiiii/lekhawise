@@ -1,0 +1,19 @@
+# Closes the system share sheet. On iOS 26 it has no Close button: it is a half-height sheet that is
+# swiped down. Older versions show a Close button, which is tapped when present.
+appId: com.lekhawise.app
+---
+- runFlow:
+    when: { visible: '(?s)(.*, )?Close(, .*)?' }
+    commands:
+      - tapOn: '(?s)(.*, )?Close(, .*)?'
+- runFlow:
+    when: { visible: '(?s)(.*, )?Save to Files(, .*)?' }
+    commands:
+      - swipe: { start: "50%,60%", end: "50%,98%", duration: 400 }
+      - waitForAnimationToEnd: { timeout: 2000 }
+- runFlow:
+    when: { visible: '(?s)(.*, )?Save to Files(, .*)?' }
+    commands:
+      - tapOn: { point: "50%,12%" }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 10000 }
+- waitForAnimationToEnd: { timeout: 2000 }

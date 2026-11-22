@@ -51,8 +51,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - tapOn: '(?s)(.*, )?Share PDF(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - takeScreenshot: 07-report-pdf-share-sheet
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Close(, .*)?' } }
-- tapOn: '(?s)(.*, )?Close(, .*)?'
+- runFlow: common/close-share.yaml
 
 # Reconcile cash to -300 (it shows -250): an adjustment of -50 is recorded; then the statement
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "account/acc_cash" } }
@@ -76,8 +75,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Share PDF(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Close(, .*)?' } }
-- tapOn: '(?s)(.*, )?Close(, .*)?'
+- runFlow: common/close-share.yaml
 
 # Backup saved to Files on the phone
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
@@ -163,5 +161,4 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - tapOn: '(?s)(.*, )?Share CSV(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
 - takeScreenshot: 07-csv-share-sheet
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Close(, .*)?' } }
-- tapOn: '(?s)(.*, )?Close(, .*)?'
+- runFlow: common/close-share.yaml
