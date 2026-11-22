@@ -94,7 +94,14 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
     commands:
       - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?On My iPhone(, .*)?' } }
       - tapOn: '(?s)(.*, )?On My iPhone(, .*)?'
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save(, .*)?' } }
+# The Files save window runs outside the app and can take a while to open; no scrolling here, a swipe closes it
+- extendedWaitUntil: { visible: '(?s)(.*, )?Save(, .*)?', timeout: 30000, optional: true }
+- runFlow:
+    when: { visible: '(?s)(.*, )?Save to Files(, .*)?' }
+    commands:
+      - tapOn: '(?s)(.*, )?Save to Files(, .*)?'
+      - extendedWaitUntil: { visible: '(?s)(.*, )?Save(, .*)?', timeout: 30000, optional: true }
+- takeScreenshot: 07-files-save-window
 - tapOn: '(?s)(.*, )?Save(, .*)?'
 - runFlow:
     when:

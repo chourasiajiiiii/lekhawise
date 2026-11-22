@@ -88,6 +88,15 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - tapOn: '(?s)(.*, )?Amount(, .*)?'
 - eraseText: 10
 - inputText: "135.50"
+# Typing into the field sometimes does not arrive on iOS 26; type again when the new amount is not in it
+- runFlow:
+    when: { notVisible: ".*135\\.50.*" }
+    commands:
+      - tapOn: '(?s)(.*, )?Amount(, .*)?'
+      - waitForAnimationToEnd: { timeout: 2000 }
+      - eraseText: 12
+      - inputText: "135.50"
+- extendedWaitUntil: { visible: ".*135\\.50.*", timeout: 5000 }
 - runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save changes(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save changes(, .*)?'

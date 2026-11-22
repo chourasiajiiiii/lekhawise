@@ -115,9 +115,17 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - tapOn: "Person 1"
 - waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "Asha"
+# With the keyboard up the first tap on Add person can be spent closing it, so close it first
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Add person(, .*)?' } }
 - tapOn: '(?s)(.*, )?Add person(, .*)?'
 - waitForAnimationToEnd: { timeout: 2000 }
+- runFlow:
+    when: { notVisible: "Person 2" }
+    commands:
+      - tapOn: '(?s)(.*, )?Add person(, .*)?'
+      - waitForAnimationToEnd: { timeout: 2000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: "Person 2" } }
 - tapOn: "Person 2"
 - waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "Ben"
