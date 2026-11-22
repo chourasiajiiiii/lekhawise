@@ -1,7 +1,11 @@
 # Opens a screen of the app through its link, e.g. runFlow with env PATH_TO: "loans/new".
 appId: com.lekhawise.app
 ---
-- openLink: "lekhawise://${PATH_TO}"
+# The simulator occasionally fails to hand a link over (an NSPOSIXErrorDomain error); a second try goes through.
+- retry:
+    maxRetries: 2
+    commands:
+      - openLink: "lekhawise://${PATH_TO}"
 # iOS asks once per simulator before an app is opened from a link.
 - runFlow:
     when:

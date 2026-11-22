@@ -25,8 +25,10 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category for part 2(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category for part 2(, .*)?'
 - waitForAnimationToEnd: { timeout: 3000 } # the category list slides up
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Personal care(, .*)?' } }
-- tapOn: '(?s)(.*, )?Personal care(, .*)?'
+# Near the top of the category list: the list is cut off above the Cancel button, so a row lower down would need
+# scrolling inside the list first, and a tap on its cut-off part lands on Cancel.
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Transport(, .*)?' } }
+- tapOn: '(?s)(.*, )?Transport(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?\$300\.00 left to assign(, .*)?', timeout: 5000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Put the rest in the empty part(, .*)?' } }
 - tapOn: '(?s)(.*, )?Put the rest in the empty part(, .*)?'

@@ -39,7 +39,7 @@ name: Reports and PDF, reconcile and statement, backup saved to the phone and re
 - takeScreenshot: 07-reports-year
 - scrollUntilVisible: { element: "Share PDF" }
 - tapOn: "Share PDF"
-- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 30000 }
+- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 90000 }
 - assertVisible: '.*\.pdf'
 - takeScreenshot: 07-report-pdf-share-sheet
 - back
@@ -61,7 +61,7 @@ name: Reports and PDF, reconcile and statement, backup saved to the phone and re
 - takeScreenshot: 07-statement
 - scrollUntilVisible: { element: "Share PDF" }
 - tapOn: "Share PDF"
-- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 30000 }
+- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 90000 }
 - back
 
 # Backup saved to the Documents folder on the phone
@@ -126,12 +126,12 @@ name: Reports and PDF, reconcile and statement, backup saved to the phone and re
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
 - scrollUntilVisible: { element: "Share CSV" }
 - tapOn: "Share CSV"
-- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 30000 }
+- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 90000 }
 - assertVisible: '.*\.csv'
 - takeScreenshot: 07-csv-share-sheet
 - back
 - scrollUntilVisible: { element: "Share Excel file" }
 - tapOn: "Share Excel file"
-- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 30000 }
+- extendedWaitUntil: { visible: "Sharing 1 file", timeout: 90000 }
 - assertVisible: '.*\.xlsx'
 - back

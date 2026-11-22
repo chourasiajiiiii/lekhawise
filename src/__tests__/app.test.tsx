@@ -427,7 +427,7 @@ describe('accounts', () => {
     await press('New account');
     await fireEvent.changeText(await screen.findByPlaceholderText('e.g. HDFC Savings'), 'Visa card');
     await press('Credit card');
-    expect(screen.getByText('Amount owed when you started tracking')).toBeTruthy();
+    expect(screen.getByLabelText('Amount owed when you started tracking')).toBeTruthy();
     await fireEvent.changeText(screen.getByPlaceholderText('0'), '200');
     await press('Save');
     await screen.findByText('Visa card');

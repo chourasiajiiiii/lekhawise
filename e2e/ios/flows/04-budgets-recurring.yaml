@@ -8,7 +8,14 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - extendedWaitUntil: { visible: '(?s)(.*, )?Set a budget(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Food & dining(, .*)?' } }
 - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
-- extendedWaitUntil: { visible: '(?s)(.*, )?Monthly budget: Food & dining(, .*)?', timeout: 5000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Monthly budget: Food & dining(, .*)?', timeout: 10000, optional: true }
+# A tap that comes while the list is still settling is lost; the row is tapped again then.
+- runFlow:
+    when:
+      notVisible: '(?s)(.*, )?Monthly budget: Food & dining(, .*)?'
+    commands:
+      - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Monthly budget: Food & dining(, .*)?', timeout: 10000 }
 - inputText: "1000"
 - takeScreenshot: 04-budget-dialog-keyboard
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save(, .*)?' } }

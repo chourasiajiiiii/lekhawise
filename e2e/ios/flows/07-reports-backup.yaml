@@ -41,7 +41,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 # Reports for the month and the financial year; the PDF opens the share sheet
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "reports" } }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Expenses by category(, .*)?' } }
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } }
+- runFlow: { file: common/find-above.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } } # savings rate, at the top
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Financial year(, .*)?' } }
 - tapOn: '(?s)(.*, )?Financial year(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?FY .*(, .*)?', timeout: 5000 }
