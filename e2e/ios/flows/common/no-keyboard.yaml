@@ -1,0 +1,11 @@
+# Closes the on-screen keyboard if it is up. In a sheet, iOS leaves the lower part of a form (Save, category chips,
+# results under the fields) behind the keyboard, where a check passes on the screen tree but a tap hits a key.
+appId: com.lekhawise.app
+---
+- runFlow:
+    when:
+      visible: "Dictate" # the microphone key, on both the letter and the number keyboard
+    commands:
+      - hideKeyboard
+      - waitForAnimationToEnd:
+          timeout: 2000

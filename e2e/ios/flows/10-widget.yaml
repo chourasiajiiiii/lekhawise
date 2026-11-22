@@ -19,6 +19,7 @@ name: Home-screen widget added from the widget gallery (best effort; the home sc
 - waitForAnimationToEnd: { timeout: 3000 }
 - takeScreenshot: 10-widget-gallery
 - tapOn: { text: '(?s)(.*, )?Search Widgets(, .*)?', optional: true }
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "LekhaWise"
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: { text: "LekhaWise", index: 0 }

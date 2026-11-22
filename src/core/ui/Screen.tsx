@@ -25,6 +25,9 @@ export function Screen({ children, scroll = true, overlay }: ScreenProps) {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           keyboardShouldPersistTaps="handled"
+          // Scrolling puts the keyboard away. In an iOS sheet the keyboard padding falls short, so the end of a
+          // long form (its Save button) can stay behind the keyboard until it is closed.
+          keyboardDismissMode="on-drag"
           contentContainerStyle={styles.content}
         >
           {children}

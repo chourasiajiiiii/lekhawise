@@ -1,0 +1,11 @@
+# Taps the form's Save button: closes the keyboard, brings Save on screen and lets the scroll settle first.
+appId: com.lekhawise.app
+---
+- runFlow: no-keyboard.yaml
+- scrollUntilVisible:
+    element: '(?s)(.*, )?Save(, .*)?'
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn: '(?s)(.*, )?Save(, .*)?'

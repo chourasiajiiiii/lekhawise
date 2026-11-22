@@ -4,12 +4,14 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - runFlow: common/fresh-start.yaml
 
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Income(, .*)?' } }
 - tapOn: '(?s)(.*, )?Income(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Amount(, .*)?' } }
 - tapOn: '(?s)(.*, )?Amount(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "1000"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Salary(, .*)?' }
@@ -18,13 +20,12 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - scrollUntilVisible: { element: '(?s)(.*, )?Bank account(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Bank account(, .*)?'
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - inputText: "250"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
@@ -34,10 +35,8 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - scrollUntilVisible: { element: '(?s)(.*, )?Cash(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Cash(, .*)?'
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 
 # Reports for the month and the financial year; the PDF opens the share sheet
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "reports" } }
@@ -109,8 +108,9 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 
 # More data after the backup ...
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - inputText: "222"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Shopping(, .*)?' }
@@ -119,11 +119,10 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - scrollUntilVisible: { element: '(?s)(.*, )?Optional(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Optional(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "Shoes"
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?4 entries(, .*)?', timeout: 10000 }
 

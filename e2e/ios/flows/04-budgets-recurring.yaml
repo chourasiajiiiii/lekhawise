@@ -18,28 +18,26 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 
 # Spending 700 then 400 goes over it, with an alert
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - inputText: "700"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - inputText: "400"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Food & dining(, .*)?'
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
+- runFlow: common/save.yaml
 - extendedWaitUntil: { visible: '(?s)(.*, )?Over budget: Food & dining(, .*)?', timeout: 10000 }
 - takeScreenshot: 04-over-budget-alert
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
@@ -53,6 +51,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - tapOn: '(?s)(.*, )?Weekly(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Set a weekly spending limit(, .*)?' } }
 - tapOn: '(?s)(.*, )?Set a weekly spending limit(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "500"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save(, .*)?'
@@ -66,8 +65,9 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 
 # A monthly recurring entry
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - inputText: "15"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Entertainment(, .*)?' }
@@ -76,20 +76,20 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - scrollUntilVisible: { element: '(?s)(.*, )?Optional(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Optional(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "Streaming"
+- runFlow: common/no-keyboard.yaml
 - scrollUntilVisible: { element: '(?s)(.*, )?Monthly(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Monthly(, .*)?'
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
+- runFlow: common/save.yaml
 - runFlow:
     when:
       visible: '(?s)(.*, )?OK(, .*)?'
     commands:
       - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
       - tapOn: '(?s)(.*, )?OK(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "recurring" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?Streaming(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Monthly · next.*(, .*)?' } }

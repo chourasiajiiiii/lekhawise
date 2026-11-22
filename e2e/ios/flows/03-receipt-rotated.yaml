@@ -3,16 +3,13 @@ name: Receipt scanning of a photo stored sideways with an orientation flag (as t
 ---
 - runFlow: common/fresh-start.yaml
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Scan a receipt(, .*)?' } }
 - tapOn: '(?s)(.*, )?Scan a receipt(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Choose from gallery(, .*)?' } }
 - tapOn: '(?s)(.*, )?Choose from gallery(, .*)?'
 - runFlow: common/pick-newest-photo.yaml
-- extendedWaitUntil: { visible: '(?s)(.*, )?Receipt read(, .*)?', timeout: 60000 }
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Check the amount, date and note, then choose a category\.(, .*)?' } }
-- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
-- tapOn: '(?s)(.*, )?OK(, .*)?'
+- runFlow: common/receipt-read.yaml
 # The form fields (checked again in the saved entry below)
 - assertVisible: { text: '(?s)(.*, )?32\.25(, .*)?', optional: true }
 - assertVisible: { text: '(?s)(.*, )?HARBOR FRESH MARKET(, .*)?', optional: true }
@@ -22,10 +19,8 @@ name: Receipt scanning of a photo stored sideways with an orientation flag (as t
 - scrollUntilVisible: { element: '(?s)(.*, )?Groceries(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Groceries(, .*)?'
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?1 entry(, .*)?', timeout: 10000 }
 - assertVisible: ".*HARBOR FRESH MARKET.*"

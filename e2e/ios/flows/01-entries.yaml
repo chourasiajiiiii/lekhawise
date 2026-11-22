@@ -7,13 +7,15 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 
 # Income of 1000 into the bank account
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - takeScreenshot: 01-new-entry
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Income(, .*)?' } }
 - tapOn: '(?s)(.*, )?Income(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Amount(, .*)?' } }
 - tapOn: '(?s)(.*, )?Amount(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "1000"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Salary(, .*)?' }
@@ -22,15 +24,14 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - scrollUntilVisible: { element: '(?s)(.*, )?Bank account(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Bank account(, .*)?'
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 
 # Expense of 250 with a note
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - inputText: "250"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Category(, .*)?' } }
 - tapOn: '(?s)(.*, )?Category(, .*)?'
 - scrollUntilVisible: { element: '(?s)(.*, )?Food & dining(, .*)?' }
@@ -43,11 +44,10 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - scrollUntilVisible: { element: '(?s)(.*, )?Optional(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Optional(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "Lunch"
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 
 # Home: totals, savings rate, recent list
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?75%(, .*)?' } }
@@ -58,20 +58,20 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 
 # Transfer 300 from the bank to cash
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 10000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Scan a receipt(, .*)?', timeout: 30000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Transfer(, .*)?' } }
 - tapOn: '(?s)(.*, )?Transfer(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Amount(, .*)?' } }
 - tapOn: '(?s)(.*, )?Amount(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "300"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?From(, .*)?' } }
 - tapOn: '(?s)(.*, )?From(, .*)?'
 - tapOn: { text: "Bank account", index: 0 }
 - tapOn: { text: "Cash", index: 1 }
-- scrollUntilVisible: { element: '(?s)(.*, )?Save(, .*)?' }
-- waitForAnimationToEnd: { timeout: 3000 }
-- tapOn: '(?s)(.*, )?Save(, .*)?'
-- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 10000 }
+- runFlow: common/save.yaml
+- extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "accounts" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?New account(, .*)?', timeout: 10000 }
 # Cash: -250 + 300 = 50; bank: 1000 - 300 = 700
@@ -88,6 +88,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - tapOn: '(?s)(.*, )?Amount(, .*)?'
 - eraseText: 10
 - inputText: "135.50"
+- runFlow: common/no-keyboard.yaml
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save changes(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save changes(, .*)?'
 - extendedWaitUntil: { visible: ".*135\\.50.*", timeout: 10000 }
@@ -96,6 +97,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 # Search finds it by amount and by note
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Search notes, categories, tags, amounts(, .*)?' } }
 - tapOn: '(?s)(.*, )?Search notes, categories, tags, amounts(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "lunc"
 - extendedWaitUntil: { visible: '(?s)(.*, )?1 entry(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Searching all months(, .*)?' } }

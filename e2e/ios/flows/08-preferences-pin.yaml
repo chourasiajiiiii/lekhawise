@@ -25,6 +25,7 @@ name: Hindi, dark theme, currency, app PIN with relock and wrong attempts
 - tapOn: '(?s)(.*, )?Currency(, .*)?'
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Search currency(, .*)?' } }
 - tapOn: '(?s)(.*, )?Search currency(, .*)?'
+- waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "rupee"
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?INR · Indian rupee(, .*)?' } }
 - tapOn: '(?s)(.*, )?INR · Indian rupee(, .*)?'

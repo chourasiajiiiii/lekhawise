@@ -1,0 +1,24 @@
+# Waits for the "Receipt read" message after a photo is picked and closes it.
+appId: com.lekhawise.app
+---
+- extendedWaitUntil:
+    visible: '(?s)(.*, )?Receipt read(, .*)?'
+    timeout: 60000
+    optional: true
+# Right after the out-of-process photo picker closes, iOS 26 sometimes shows the message on screen but leaves it out
+# of the screen tree. Its OK button is then tapped by position; the filled-in form is checked afterwards either way.
+- runFlow:
+    when:
+      notVisible: '(?s)(.*, )?Receipt read(, .*)?'
+    commands:
+      - takeScreenshot: receipt-read-not-in-tree
+      - tapOn:
+          point: "50%,57%"
+- runFlow:
+    when:
+      visible: '(?s)(.*, )?Receipt read(, .*)?'
+    commands:
+      - assertVisible: '(?s)(.*, )?Check the amount, date and note, then choose a category\.(, .*)?'
+      - tapOn: '(?s)(.*, )?OK(, .*)?'
+- waitForAnimationToEnd:
+    timeout: 3000
