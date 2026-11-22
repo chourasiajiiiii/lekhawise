@@ -1,0 +1,7 @@
+# In Android's photo picker, taps the newest photo (the picker lists the most recent first).
+appId: com.lekhawise.app
+---
+- extendedWaitUntil:
+    visible: "Photo taken on .*"
+    timeout: 15000
+- tapOn: { text: "Photo taken on .*", index: 0 }

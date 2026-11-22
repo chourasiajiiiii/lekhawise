@@ -1,0 +1,62 @@
+appId: com.lekhawise.app
+name: Hindi, dark theme, currency, app PIN with relock and wrong attempts
+---
+- runFlow: common/fresh-start.yaml
+
+# Hindi, then back to English
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "language" } }
+- tapOn: "हिन्दी"
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "" } }
+- extendedWaitUntil: { visible: "कुल बैलेंस.*", timeout: 10000 }
+- assertVisible: "अधिक"
+- takeScreenshot: 08-hindi
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "language" } }
+- tapOn: "English"
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "" } }
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 10000 }
+
+# Dark theme and Indian rupees
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "settings" } }
+- scrollUntilVisible: { element: "Dark" }
+- tapOn: "Dark"
+- tapOn: "Currency"
+- tapOn: "Search currency"
+- inputText: "rupee"
+- tapOn: "INR · Indian rupee"
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "" } }
+- extendedWaitUntil: { visible: "₹0\\.00", timeout: 10000 }
+- takeScreenshot: 08-dark-inr
+
+# App PIN
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "security" } }
+- tapOn: "App PIN"
+- extendedWaitUntil: { visible: "Choose a PIN \\(4 to 6 digits\\)", timeout: 5000 }
+- tapOn: "1"
+- tapOn: "3"
+- tapOn: "5"
+- tapOn: "7"
+- tapOn: "Continue"
+- extendedWaitUntil: { visible: "Enter the new PIN again", timeout: 5000 }
+- tapOn: "1"
+- tapOn: "3"
+- tapOn: "5"
+- tapOn: "7"
+- extendedWaitUntil: { visible: "PIN saved", timeout: 5000 }
+- tapOn: "OK"
+
+# Next start: locked until the PIN is entered; a wrong PIN is refused
+- stopApp
+- launchApp
+- extendedWaitUntil: { visible: "Enter your PIN", timeout: 30000 }
+- takeScreenshot: 08-pin-lock
+- tapOn: "0"
+- tapOn: "0"
+- tapOn: "0"
+- tapOn: "0"
+- extendedWaitUntil: { visible: "Wrong PIN\\. 4 attempts left before a pause\\.", timeout: 5000 }
+- tapOn: "1"
+- tapOn: "3"
+- tapOn: "5"
+- tapOn: "7"
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 10000 }
+- takeScreenshot: 08-unlocked

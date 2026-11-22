@@ -1,0 +1,27 @@
+appId: com.lekhawise.app
+name: Phone lock with the device PIN (Android; the emulator's screen lock is set to 1234 before this flow)
+---
+- runFlow: common/fresh-start.yaml
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "security" } }
+- tapOn: "Phone lock"
+# Turning it on asks for the phone's own PIN (Android shows its passcode screen; screenshots of it come out black).
+- waitForAnimationToEnd: { timeout: 3000 }
+- inputText: "1234"
+- pressKey: Enter
+- extendedWaitUntil: { visible: "Lock again", timeout: 20000 }
+- takeScreenshot: 09-phone-lock-on
+
+# Next start: locked; the phone PIN opens it
+- stopApp
+- launchApp
+- waitForAnimationToEnd: { timeout: 3000 }
+- runFlow:
+    when:
+      notVisible: "Total balance.*"
+    commands:
+      - tapOn: { text: "Unlock", optional: true }
+      - waitForAnimationToEnd: { timeout: 3000 }
+      - inputText: "1234"
+      - pressKey: Enter
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 30000 }
+- takeScreenshot: 09-unlocked-with-phone-pin

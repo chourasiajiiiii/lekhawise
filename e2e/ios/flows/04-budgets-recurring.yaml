@@ -23,7 +23,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
 - tapOn: "Food & dining"
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
 - inputText: "400"
@@ -70,7 +70,7 @@ name: Budgets (monthly by category, weekly overall, alert, carry-forward) and re
       visible: "OK"
     commands:
       - tapOn: "OK"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "recurring" } }
 - extendedWaitUntil: { visible: "Streaming", timeout: 10000 }
 - assertVisible: "Monthly · next.*"

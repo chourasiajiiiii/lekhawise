@@ -21,7 +21,7 @@ name: Receipt scanning of a photo stored sideways with an orientation flag (as t
 - tapOn: "Groceries"
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: "1 entry", timeout: 10000 }
 - assertVisible: ".*HARBOR FRESH MARKET.*"

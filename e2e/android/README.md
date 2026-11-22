@@ -1,7 +1,29 @@
 # Device testing on an Android emulator
 
-`driver.mjs` taps through the real app on an emulator or a USB-connected Android phone, using only `adb` and
-UI Automator from the Android SDK. It has no dependencies of its own.
+Two tools:
+
+- `run.sh` runs the [Maestro](https://maestro.mobile.dev) flows in `flows/` against the installed release app: the
+  same ten feature areas as the iPhone flows in `e2e/ios/flows`, with Android's own photo picker, share sheet,
+  folder and file pickers, screen lock and launcher.
+- `driver.mjs` taps through the app step by step, using only `adb` and UI Automator from the Android SDK, for
+  manual checks. It has no dependencies of its own.
+
+## Automated flows (Maestro)
+
+Setup on top of the one below: Maestro (unzip `maestro.zip` from its GitHub releases, e.g. to `D:\Android\maestro`)
+and the release APK installed on a booted emulator (`adb install -r <apk>`). Then, in Git Bash:
+
+```bash
+export JAVA_HOME=D:/Android/jdk17 ANDROID_HOME=D:/Android/sdk MAESTRO=D:/Android/maestro/bin/maestro.bat
+bash e2e/android/run.sh            # every flow, about 25 minutes
+bash e2e/android/run.sh 02 07      # only flows whose names start with 02 or 07
+```
+
+Results (summary, screenshots per step, logcat) go to `e2e/android/results/`. The script makes the emulator screen
+tall while it runs, because Android's UI tree only holds what is on screen; it sets the screen lock PIN to 1234 for
+the phone-lock flow and removes it again. Differences from the iPhone flows: Android dialog buttons are in
+capitals (`DELETE`, `REPLACE`), the keyboard is closed with Enter before tapping a button it covers, and backups
+are saved through Android's folder picker into Documents.
 
 ## One-time setup (no Android Studio needed)
 

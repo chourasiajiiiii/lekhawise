@@ -11,18 +11,23 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - tapOn: "Category"
 - scrollUntilVisible: { element: "Salary" }
 - tapOn: "Salary"
+- scrollUntilVisible: { element: "Bank account" }
+- tapOn: "Bank account"
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
 - extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
 - inputText: "250"
 - tapOn: "Category"
 - scrollUntilVisible: { element: "Food & dining" }
 - tapOn: "Food & dining"
+# Paid in cash (the form preselects the account used last, the bank)
+- scrollUntilVisible: { element: "Cash" }
+- tapOn: "Cash"
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 
 # Reports for the month and the financial year; the PDF opens the share sheet
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "reports" } }
@@ -91,7 +96,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - inputText: "Shoes"
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: "4 entries", timeout: 10000 }
 

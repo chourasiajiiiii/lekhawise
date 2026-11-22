@@ -1,0 +1,41 @@
+appId: com.lekhawise.app
+name: Home-screen widget added from the Pixel launcher, and updated when an entry is saved (Android)
+---
+- runFlow: common/fresh-start.yaml
+
+# Add the widget unless it is already on the home screen
+- pressKey: Home
+- waitForAnimationToEnd: { timeout: 3000 }
+- runFlow:
+    when:
+      notVisible: "Spent today"
+    commands:
+      - longPressOn: { point: "50%,55%" }
+      - tapOn: "Widgets"
+      - tapOn: "Search"
+      - inputText: "LekhaWise"
+      - tapOn: { text: "LekhaWise", index: 1 }
+      - tapOn: "LekhaWise widget, 2 wide.*"
+      - tapOn: "Add"
+      - waitForAnimationToEnd: { timeout: 5000 }
+- extendedWaitUntil: { visible: "Spent today", timeout: 10000 }
+- takeScreenshot: 10-widget-on-home-screen
+
+# An expense of 42 today shows up on the widget as soon as it is saved
+- launchApp
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 30000 }
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
+- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
+- inputText: "42"
+- tapOn: "Category"
+- scrollUntilVisible: { element: "Food & dining" }
+- tapOn: "Food & dining"
+- pressKey: Enter
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- pressKey: Home
+- waitForAnimationToEnd: { timeout: 3000 }
+- extendedWaitUntil: { visible: '\$42\.00', timeout: 15000 }
+- assertVisible: '.*: \$42\.00 spent'
+- takeScreenshot: 10-widget-updated

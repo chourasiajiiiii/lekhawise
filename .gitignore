@@ -46,3 +46,6 @@ e2e/android/screenshots/
 # builds and iPhone simulator test results
 /build
 e2e/ios/results/
+
+# Android emulator test results
+e2e/android/results/

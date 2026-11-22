@@ -17,5 +17,5 @@ name: Phone lock with Face ID (run.sh enrols Face ID and answers each prompt wit
 # Next start: locked, Face ID is asked for and the app opens
 - stopApp
 - launchApp
-- extendedWaitUntil: { visible: "Total balance", timeout: 30000 }
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 30000 }
 - takeScreenshot: 09-unlocked-with-face-id

@@ -3,7 +3,7 @@ name: Home-screen widget added from the widget gallery (best effort; the home sc
 ---
 # Expects data from an earlier flow; opening the app refreshes the widget.
 - launchApp
-- extendedWaitUntil: { visible: "Total balance", timeout: 30000 }
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 30000 }
 - pressKey: Home
 - waitForAnimationToEnd: { timeout: 3000 }
 - longPressOn: { point: "50%,50%" }

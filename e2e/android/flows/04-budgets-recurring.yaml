@@ -1,0 +1,87 @@
+appId: com.lekhawise.app
+name: Budgets (monthly by category, weekly overall, alert, carry-forward) and recurring entries
+---
+- runFlow: common/fresh-start.yaml
+
+# Monthly budget of 1000 for Food & dining
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "budgets" } }
+- extendedWaitUntil: { visible: "Set a budget", timeout: 10000 }
+- tapOn: "Food & dining"
+- extendedWaitUntil: { visible: "Monthly budget: Food & dining", timeout: 5000 }
+- inputText: "1000"
+- takeScreenshot: 04-budget-dialog-keyboard
+- pressKey: Enter
+- tapOn: { text: "Save", optional: true }
+- extendedWaitUntil: { visible: "By category", timeout: 5000 }
+- assertVisible: "\\$0\\.00 of \\$1,000\\.00"
+
+# Spending 700 then 400 goes over it, with an alert
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
+- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
+- inputText: "700"
+- tapOn: "Category"
+- scrollUntilVisible: { element: "Food & dining" }
+- tapOn: "Food & dining"
+- pressKey: Enter
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
+- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
+- inputText: "400"
+- tapOn: "Category"
+- scrollUntilVisible: { element: "Food & dining" }
+- tapOn: "Food & dining"
+- pressKey: Enter
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { visible: "Over budget: Food & dining", timeout: 10000 }
+- takeScreenshot: 04-over-budget-alert
+- tapOn: "OK"
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "budgets" } }
+- extendedWaitUntil: { visible: "\\$100\\.00 over", timeout: 10000 }
+- takeScreenshot: 04-budgets-month
+
+# Weekly overall limit of 500 with carry-forward
+- tapOn: "Weekly"
+- tapOn: "Set a weekly spending limit"
+- inputText: "500"
+- pressKey: Enter
+- tapOn: { text: "Save", optional: true }
+- extendedWaitUntil: { visible: "\\$1,100\\.00 of \\$500\\.00", timeout: 5000 }
+- tapOn: { text: "All spending", index: 1 }
+- extendedWaitUntil: { visible: "over budget", timeout: 5000 }
+- assertVisible: "\\$600\\.00"
+- tapOn: "Carry unspent money forward"
+- takeScreenshot: 04-weekly-budget
+
+# A monthly recurring entry
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
+- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
+- inputText: "15"
+- tapOn: "Category"
+- scrollUntilVisible: { element: "Entertainment" }
+- tapOn: "Entertainment"
+- scrollUntilVisible: { element: "Optional" }
+- tapOn: "Optional"
+- inputText: "Streaming"
+- scrollUntilVisible: { element: "Monthly" }
+- tapOn: "Monthly"
+- pressKey: Enter
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- runFlow:
+    when:
+      visible: "OK"
+    commands:
+      - tapOn: "OK"
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "recurring" } }
+- extendedWaitUntil: { visible: "Streaming", timeout: 10000 }
+- assertVisible: "Monthly · next.*"
+- tapOn: "Streaming"
+- tapOn: "Pause"
+- extendedWaitUntil: { visible: "Paused", timeout: 5000 }
+- tapOn: "Resume \\(adds any missed entries\\)"
+- extendedWaitUntil: { visible: "Next:.*", timeout: 5000 }
+- takeScreenshot: 04-recurring

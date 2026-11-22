@@ -7,13 +7,13 @@ name: Hindi, dark theme, currency, app PIN with relock and wrong attempts
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "language" } }
 - tapOn: "हिन्दी"
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "" } }
-- extendedWaitUntil: { visible: "कुल बैलेंस", timeout: 10000 }
+- extendedWaitUntil: { visible: "कुल बैलेंस.*", timeout: 10000 }
 - assertVisible: "अधिक"
 - takeScreenshot: 08-hindi
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "language" } }
 - tapOn: "English"
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "" } }
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 10000 }
 
 # Dark theme and Indian rupees
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "settings" } }
@@ -57,5 +57,5 @@ name: Hindi, dark theme, currency, app PIN with relock and wrong attempts
 - tapOn: "3"
 - tapOn: "5"
 - tapOn: "7"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 10000 }
 - takeScreenshot: 08-unlocked

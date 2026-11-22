@@ -1,0 +1,32 @@
+appId: com.lekhawise.app
+name: Receipt scanning from the photo library (upright photo)
+---
+- runFlow: common/fresh-start.yaml
+- addMedia:
+    - "../media/receipt-us.png"
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
+- extendedWaitUntil: { visible: "Scan a receipt", timeout: 10000 }
+- tapOn: "Scan a receipt"
+- tapOn: "CHOOSE FROM GALLERY"
+- takeScreenshot: 02-photo-picker
+- runFlow: common/pick-newest-photo.yaml
+- extendedWaitUntil: { visible: "Receipt read", timeout: 60000 }
+- takeScreenshot: 02-receipt-read
+- assertVisible: "Check the amount, date and note, then choose a category."
+- tapOn: "OK"
+# The form fields (checked again in the saved entry below)
+- assertVisible: { text: "32.25", optional: true }
+- assertVisible: { text: "HARBOR FRESH MARKET", optional: true }
+- takeScreenshot: 02-form-filled
+- tapOn: "Category"
+- scrollUntilVisible: { element: "Groceries" }
+- tapOn: "Groceries"
+- scrollUntilVisible: { element: "Save" }
+- tapOn: "Save"
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
+- extendedWaitUntil: { visible: "1 entry", timeout: 10000 }
+- assertVisible: ".*HARBOR FRESH MARKET.*"
+- assertVisible: '.*32\.25.*'
+- assertVisible: "Has a photo"
+- takeScreenshot: 02-saved

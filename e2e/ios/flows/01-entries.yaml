@@ -19,7 +19,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - tapOn: "Bank account"
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 
 # Expense of 250 with a note
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transaction/new" } }
@@ -28,12 +28,15 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - tapOn: "Category"
 - scrollUntilVisible: { element: "Food & dining" }
 - tapOn: "Food & dining"
+# Paid in cash (the form preselects the account used last, which is the bank after the income above)
+- scrollUntilVisible: { element: "Cash" }
+- tapOn: "Cash"
 - scrollUntilVisible: { element: "Optional" }
 - tapOn: "Optional"
 - inputText: "Lunch"
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 
 # Home: totals, savings rate, recent list
 - assertVisible: "75%"
@@ -53,7 +56,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - tapOn: { text: "Cash", index: 1 }
 - scrollUntilVisible: { element: "Save" }
 - tapOn: "Save"
-- extendedWaitUntil: { visible: "Total balance", timeout: 10000 }
+- extendedWaitUntil: { notVisible: "Scan a receipt", timeout: 10000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "accounts" } }
 - extendedWaitUntil: { visible: "New account", timeout: 10000 }
 # Cash: -250 + 300 = 50; bank: 1000 - 300 = 700
@@ -94,7 +97,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 # Data is still there after the app is closed and opened again
 - stopApp
 - launchApp
-- extendedWaitUntil: { visible: "Total balance", timeout: 30000 }
+- extendedWaitUntil: { visible: "Total balance.*", timeout: 30000 }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: "2 entries", timeout: 10000 }
 - takeScreenshot: 01-after-restart
