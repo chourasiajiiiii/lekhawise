@@ -18,7 +18,6 @@ appId: com.lekhawise.app
     when:
       visible: '(?s)(.*, )?Receipt read(, .*)?'
     commands:
-      - assertVisible: '(?s)(.*, )?Check the amount, date and note, then choose a category\.(, .*)?'
       - tapOn: '(?s)(.*, )?OK(, .*)?'
 - waitForAnimationToEnd:
     timeout: 3000

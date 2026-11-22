@@ -1,0 +1,9 @@
+# Opens one link before the flows start. The first link after the app is installed makes iOS ask "Open in
+# LekhaWise?", and the link it lets through can take more than 30 s to arrive; later links open at once.
+appId: com.lekhawise.app
+---
+- runFlow: fresh-start.yaml
+- runFlow: { file: open.yaml, env: { PATH_TO: "settings" } }
+- extendedWaitUntil:
+    visible: '(?s)(.*, )?Net worth(, .*)?'
+    timeout: 90000

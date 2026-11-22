@@ -1,11 +1,17 @@
 # Closes the on-screen keyboard if it is up. In a sheet, iOS leaves the lower part of a form (Save, category chips,
 # results under the fields) behind the keyboard, where a check passes on the screen tree but a tap hits a key.
+# Maestro's hideKeyboard cannot close it on iOS 26, so this drags the form up a little: forms put the keyboard away
+# when scrolled (keyboardDismissMode in Screen.tsx).
 appId: com.lekhawise.app
 ---
-- runFlow:
-    when:
+- repeat:
+    times: 3
+    while:
       visible: "Dictate" # the microphone key, on both the letter and the number keyboard
     commands:
-      - hideKeyboard
+      - swipe:
+          start: "50%,40%"
+          end: "50%,30%"
+          duration: 400
       - waitForAnimationToEnd:
           timeout: 2000

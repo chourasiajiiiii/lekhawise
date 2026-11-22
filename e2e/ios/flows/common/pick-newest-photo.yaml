@@ -1,4 +1,5 @@
-# In Apple's photo picker, taps the newest photo (the last thumbnail; the simulator may also hold sample photos).
+# In Apple's photo picker, taps the newest photo (the simulator also holds sample photos). The iOS 26 grid
+# (thumbnails with id PXGGridLayout-Info) lists the newest first; the older layout ("Photo, <date>") lists it last.
 appId: com.lekhawise.app
 ---
 - extendedWaitUntil:
@@ -6,26 +7,12 @@ appId: com.lekhawise.app
     timeout: 15000
     optional: true
 - evalScript: ${output.photoIndex = -1}
-- evalScript: ${output.photoDone = false}
-- repeat:
-    while:
-      true: ${!output.photoDone}
-    commands:
-      - runFlow:
-          when:
-            visible: { id: "PXGGridLayout-Info", index: "${output.photoIndex + 1}" }
-          commands:
-            - evalScript: ${output.photoIndex = output.photoIndex + 1}
-      - runFlow:
-          when:
-            notVisible: { id: "PXGGridLayout-Info", index: "${output.photoIndex + 1}" }
-          commands:
-            - evalScript: ${output.photoDone = true}
 - runFlow:
     when:
-      true: ${output.photoIndex >= 0}
+      visible: { id: "PXGGridLayout-Info" }
     commands:
-      - tapOn: { id: "PXGGridLayout-Info", index: "${output.photoIndex}" }
+      - evalScript: ${output.photoIndex = 0}
+      - tapOn: { id: "PXGGridLayout-Info", index: 0 }
 # Older picker layout: thumbnails labelled "Photo, <date>".
 - runFlow:
     when:
@@ -57,3 +44,14 @@ appId: com.lekhawise.app
     commands:
       - waitForAnimationToEnd: { timeout: 3000 }
       - tapOn: { point: "16%,25%" }
+      # A tap that comes while the picker is still loading is lost; a second one then picks the photo. If the first
+      # one worked, the picker is gone and this lands on the form's Expense switch, which is already selected.
+      - extendedWaitUntil:
+          visible: '(?s)(.*, )?Receipt read(, .*)?'
+          timeout: 15000
+          optional: true
+      - runFlow:
+          when:
+            notVisible: '(?s)(.*, )?Receipt read(, .*)?'
+          commands:
+            - tapOn: { point: "16%,25%" }

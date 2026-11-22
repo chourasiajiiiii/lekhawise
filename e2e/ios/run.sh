@@ -132,6 +132,8 @@ device_checks() {
 # ------------------------------------------------------------------ flows
 note "## Flows"
 F="$HERE/flows"
+# The first link after install is slow to arrive (see the flow); opened here, so it cannot land in the middle of 01.
+run_flow "$F/common/link-warmup.yaml" warn
 run_flow "$F/01-entries.yaml"
 # Each receipt flow picks the newest photo, so its photo is added just before it.
 wanted 02 && xcrun simctl addmedia "$UDID" "$HERE/media/receipt-us.png"
