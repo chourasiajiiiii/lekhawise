@@ -1,6 +1,14 @@
 # Taps the form's Save button: closes the keyboard, brings Save on screen and lets the scroll settle first.
 appId: com.lekhawise.app
 ---
+# The "Receipt read" message can arrive late, after the scan flow moved on; it blocks the form until closed.
+- runFlow:
+    when:
+      visible: '(?s)(.*, )?Receipt read(, .*)?'
+    commands:
+      - tapOn: '(?s)(.*, )?OK(, .*)?'
+      - waitForAnimationToEnd:
+          timeout: 2000
 - runFlow: no-keyboard.yaml
 - scrollUntilVisible:
     element: '(?s)(.*, )?Save(, .*)?'
