@@ -80,13 +80,13 @@ export default function CalendarScreen() {
                 accessibilityState={{ selected: isSelected }}
                 style={[
                   styles.day,
-                  inMonth && intensity ? { backgroundColor: `${colors.expense}${Math.round(intensity * 255).toString(16).padStart(2, '0')}` } : null,
+                  inMonth && intensity ? { backgroundColor: `${colors.expense}${Math.round(intensity * HEAT_MAX_ALPHA * 255).toString(16).padStart(2, '0')}` } : null,
                   isSelected ? { borderColor: colors.primary, borderWidth: 2 } : null,
                 ]}
               >
                 {inMonth ? (
                   <>
-                    <AppText variant="label" color={d === today ? colors.primary : colors.text}>
+                    <AppText variant="label" style={d === today ? styles.today : null}>
                       {Number(d.slice(8, 10))}
                     </AppText>
                     <AppText variant="caption" muted numberOfLines={1} style={styles.dayAmount}>
@@ -121,7 +121,12 @@ export default function CalendarScreen() {
   );
 }
 
+/** The busiest day's tint stays light enough for the day number and amount on it to be read in both themes. */
+const HEAT_MAX_ALPHA = 0.45;
+
 const styles = StyleSheet.create({
+  // Today is marked by weight and an underline, not colour: a coloured number got lost on the red day tints.
+  today: { fontWeight: '800', textDecorationLine: 'underline' },
   card: { gap: 8, paddingHorizontal: 8 },
   week: { flexDirection: 'row' },
   weekday: { flex: 1, textAlign: 'center' },

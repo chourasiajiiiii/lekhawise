@@ -103,17 +103,22 @@ function BackgroundTasks() {
 
   useEffect(() => {
     let cancelled = false;
+    // Once this tree is unmounted (Android recreates the screen when the text size changes, for example), its
+    // database connection is closed on purpose and the new tree redoes the work: errors from then on are expected.
+    const report = (error: unknown) => {
+      if (!cancelled) console.error(error);
+    };
     const catchUp = async () => {
       const created = await processRecurring(db, todayISO());
       if (created > 0 && !cancelled) await notifyBudgetAlerts(await checkBudgetAlerts(db, getWeekStart()));
       if (!cancelled) await rescheduleBillReminders(db);
       if (!cancelled) await refreshWidget(db);
     };
-    catchUp().catch(console.error);
-    cleanUpOrphanPhotos(db).catch(console.error);
+    catchUp().catch(report);
+    cleanUpOrphanPhotos(db).catch(report);
 
     const appState = AppState.addEventListener('change', (state) => {
-      if (state === 'active') catchUp().catch(console.error);
+      if (state === 'active') catchUp().catch(report);
     });
 
     // Reminders follow edits to bills (debounced: a restore or import changes a lot at once).
@@ -121,8 +126,8 @@ function BackgroundTasks() {
     const unsubscribe = subscribeDataChanged(() => {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
-        rescheduleBillReminders(db).catch(console.error);
-        refreshWidget(db).catch(console.error);
+        rescheduleBillReminders(db).catch(report);
+        refreshWidget(db).catch(report);
       }, 1500);
     });
 

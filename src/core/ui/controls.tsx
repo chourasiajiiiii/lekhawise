@@ -176,7 +176,7 @@ export function ListRow({ title, subtitle, left, right, onPress, onLongPress, ch
           {title}
         </AppText>
         {subtitle ? (
-          <AppText variant="caption" muted numberOfLines={2}>
+          <AppText variant="caption" muted>
             {subtitle}
           </AppText>
         ) : null}

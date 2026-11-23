@@ -90,14 +90,14 @@ export function MonthlyTrend({ months, onPress }: { months: MonthTotal[]; onPres
               expense: compact(m.expense),
             })}
           >
-            <AppText variant="caption" muted style={styles.trendValue} numberOfLines={1}>
+            <AppText variant="caption" muted style={styles.trendValue} numberOfLines={1} maxFontSizeMultiplier={AXIS_TEXT_MAX_SCALE}>
               {m.expense ? compact(m.expense) : ''}
             </AppText>
             <View style={[styles.trendBars, { height: CHART_HEIGHT }]}>
               <View style={[styles.bar, { height: barHeight(m.income, max, CHART_HEIGHT), backgroundColor: colors.income }]} />
               <View style={[styles.bar, { height: barHeight(m.expense, max, CHART_HEIGHT), backgroundColor: colors.expense }]} />
             </View>
-            <AppText variant="caption" muted numberOfLines={1}>
+            <AppText variant="caption" muted numberOfLines={1} maxFontSizeMultiplier={AXIS_TEXT_MAX_SCALE}>
               {formatShortMonth(m.month)}
             </AppText>
           </Pressable>
@@ -149,7 +149,7 @@ export function SeriesChart({
               <View style={[styles.seriesBar, { height: barHeight(-p.value, range, HEIGHT), backgroundColor: negativeColor ?? colors.expense }]} />
             ) : null}
           </View>
-          <AppText variant="caption" muted numberOfLines={1} style={styles.seriesLabel}>
+          <AppText variant="caption" muted numberOfLines={1} style={styles.seriesLabel} maxFontSizeMultiplier={AXIS_TEXT_MAX_SCALE}>
             {p.label}
           </AppText>
         </View>
@@ -174,6 +174,13 @@ function LegendDot({ color, label }: { color: string; label: string }) {
     </View>
   );
 }
+
+/**
+ * Month names and values under chart bars sit in columns a twelfth of the screen wide: with a larger system text
+ * size they run into each other or are cut to "…", so they keep their normal size. Each bar's accessibility label
+ * carries the full month and value for screen readers.
+ */
+const AXIS_TEXT_MAX_SCALE = 1;
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },

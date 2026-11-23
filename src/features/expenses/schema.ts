@@ -289,6 +289,8 @@ export const SCHEMA_VERSION = MIGRATIONS.length;
 export async function initDatabase(db: SQLiteDatabase, key: DatabaseKey = null): Promise<void> {
   if (key) await db.execAsync(keyStatement(key.hex));
   await migrate(db, MIGRATIONS);
+  // The app can follow the phone's language, which may have changed while the app was closed.
+  await relabelDefaults(db);
   await processRecurring(db, todayISO());
 }
 

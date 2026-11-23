@@ -49,3 +49,5 @@ e2e/ios/results/
 
 # Android emulator test results
 e2e/android/results/
+e2e/android/tour/
+e2e/android/matrix/

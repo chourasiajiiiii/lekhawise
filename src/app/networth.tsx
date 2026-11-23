@@ -41,7 +41,7 @@ export default function NetWorthScreen() {
       <SectionTitle>{t('Last 12 months')}</SectionTitle>
       <Card>
         <SeriesChart
-          points={(data?.history ?? []).map((p) => ({ key: p.month, label: formatShortMonth(p.month).slice(0, 3), value: p.netWorth }))}
+          points={(data?.history ?? []).map((p) => ({ key: p.month, label: formatShortMonth(p.month), value: p.netWorth }))}
           format={(v) => compact(v)}
         />
       </Card>

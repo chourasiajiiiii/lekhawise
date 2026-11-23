@@ -26,14 +26,14 @@ export function processRecurring(db: SQLiteDatabase, today: ISODate): Promise<nu
 const inFlight = new WeakMap<SQLiteDatabase, Promise<number>>();
 
 async function run(db: SQLiteDatabase, today: ISODate): Promise<number> {
-  const rules = await db.getAllAsync<RecurringRule>(
-    "select * from recurring where active = 1 and mode = 'auto' and next_date <= ?",
-    today,
-  );
-  if (rules.length === 0) return 0;
+  const due = "select * from recurring where active = 1 and mode = 'auto' and next_date <= ?";
+  if (!(await db.getFirstAsync(due, today))) return 0;
 
   let created = 0;
   await db.withTransactionAsync(async () => {
+    // Read inside the transaction: when Android recreates the screen, a second connection can run this at the same
+    // time, and SQLite then lets only one of them write the due entries.
+    const rules = await db.getAllAsync<RecurringRule>(due, today);
     const now = new Date().toISOString();
     for (const rule of rules) {
       const result = computeDueOccurrences(rule, today);
