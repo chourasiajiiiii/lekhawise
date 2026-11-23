@@ -2,9 +2,9 @@ name: iPhone
 
 # Builds the release app for the iPhone simulator on a GitHub-hosted Mac and taps through it with Maestro.
 # Free for public repositories. Results (summary, screenshots, app log) are attached to each run.
+# iPhone is on hold (no iPhone release planned yet), so this runs only when started by hand:
+# Actions tab → iPhone → Run workflow, or: gh workflow run iphone.yml
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       flows:

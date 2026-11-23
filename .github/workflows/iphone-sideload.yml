@@ -3,10 +3,9 @@ name: iPhone sideload build
 # Builds LekhaWise for a real iPhone on a GitHub-hosted Mac and publishes it as the "iphone-latest" release, to
 # install with AltStore or SideStore and a free Apple ID. Free for public repositories. Run it from the Actions tab
 # ("Run workflow") or with: gh workflow run iphone-sideload.yml
+# iPhone is on hold, so version tags no longer build it automatically.
 on:
   workflow_dispatch:
-  push:
-    tags: ['v*']
 
 permissions:
   contents: write
