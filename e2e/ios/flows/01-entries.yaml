@@ -129,7 +129,7 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - tapOn: '(?s)(.*, )?Delete(, .*)?'
 - extendedWaitUntil: { visible: '(?s)(.*, )?Delete transaction\?(, .*)?', timeout: 5000 }
 - takeScreenshot: 01-delete-alert
-- tapOn: { text: "Delete", index: 1 }
+- tapOn: { text: "Delete", rightOf: "Cancel" }
 - extendedWaitUntil: { visible: '(?s)(.*, )?2 entries(, .*)?', timeout: 10000 }
 
 # Data is still there after the app is closed and opened again

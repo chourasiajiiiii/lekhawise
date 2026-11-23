@@ -112,6 +112,7 @@ name: Split payment, tags, template, duplicate warning, bill split with friends
 - scrollUntilVisible: { element: '(?s)(.*, )?Others owe me part of this(, .*)?' }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Others owe me part of this(, .*)?'
+- runFlow: { file: common/find.yaml, env: { TEXT: "Person 1" } }
 - tapOn: "Person 1"
 - waitForAnimationToEnd: { timeout: 2000 }
 - inputText: "Asha"

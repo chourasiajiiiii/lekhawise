@@ -4,7 +4,15 @@ name: Phone lock with Face ID (run.sh enrols Face ID and answers each prompt wit
 - runFlow: common/fresh-start.yaml
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "security" } }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Phone lock(, .*)?' } }
+- waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?Phone lock(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?(Lock again|.*Face ID.*)(, .*)?', timeout: 10000, optional: true }
+# A tap while the screen was still settling can go unanswered; tap again then
+- runFlow:
+    when:
+      notVisible: '(?s)(.*, )?(Lock again|.*Face ID.*)(, .*)?'
+    commands:
+      - tapOn: '(?s)(.*, )?Phone lock(, .*)?'
 # First use: iOS asks whether the app may use Face ID.
 - runFlow:
     when:

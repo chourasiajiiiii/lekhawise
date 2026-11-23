@@ -24,14 +24,15 @@ name: Backup restored from Files (run.sh put the backup file from 07 there), CSV
 - extendedWaitUntil: { visible: '(?s)(.*, )?lekhawise-backup.*(, .*)?', timeout: 10000 }
 - waitForAnimationToEnd: { timeout: 3000 }
 - tapOn: '(?s)(.*, )?lekhawise-backup.*(, .*)?'
-- extendedWaitUntil: { visible: '(?s)(.*, )?Restore this backup(, .*)?', timeout: 15000, optional: true }
+# The preview of the picked file (its Restore button is further down, off screen)
+- extendedWaitUntil: { visible: '(?s)(.*, )?Made on .*(, .*)?', timeout: 15000, optional: true }
 # A tap on the file name can go unanswered in the iOS 26 picker; the file's icon (first in the grid) is tapped then
 - runFlow:
-    when: { visible: '(?s)(.*, )?lekhawise-backup.*(, .*)?' }
+    when: { visible: '(?s)(.*, )?lekhawise-backup.*(, .*)?', notVisible: '(?s)(.*, )?Made on .*(, .*)?' }
     commands:
       - takeScreenshot: 07b-picker-after-tap
       - tapOn: { point: "18%,30%" }
-- extendedWaitUntil: { visible: '(?s)(.*, )?Restore this backup(, .*)?', timeout: 20000 }
+- extendedWaitUntil: { visible: '(?s)(.*, )?Made on .*(, .*)?', timeout: 20000 }
 - takeScreenshot: 07-restore-preview
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Restore this backup(, .*)?' } }
 - tapOn: '(?s)(.*, )?Restore this backup(, .*)?'
