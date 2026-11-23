@@ -110,7 +110,12 @@ name: Entries, home totals, edit, delete, search, data kept after restart
 - inputText: "lunc"
 - extendedWaitUntil: { visible: '(?s)(.*, )?1 entry(, .*)?', timeout: 10000 }
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Searching all months(, .*)?' } }
-- eraseText: 10
+# The field's own clear button; erasing key by key lets iOS autocorrect put a word back
+- tapOn: { text: "Clear text", optional: true }
+- runFlow:
+    when: { visible: '(?s)(.*, )?Searching all months(, .*)?' }
+    commands:
+      - eraseText: 20
 - extendedWaitUntil: { visible: '(?s)(.*, )?3 entries(, .*)?', timeout: 10000 }
 
 # Delete it

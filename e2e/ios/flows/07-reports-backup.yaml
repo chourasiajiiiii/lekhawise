@@ -86,7 +86,7 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
 - takeScreenshot: 07-backup-share-sheet
 - runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Save to Files(, .*)?' } }
 - tapOn: '(?s)(.*, )?Save to Files(, .*)?'
-- waitForAnimationToEnd: { timeout: 5000 }
+- waitForAnimationToEnd: { timeout: 1500 }
 - takeScreenshot: 07-files-save
 - runFlow:
     when:
@@ -102,7 +102,17 @@ name: Reports and PDF, reconcile and statement, backup saved to Files and restor
       - tapOn: '(?s)(.*, )?Save to Files(, .*)?'
       - extendedWaitUntil: { visible: '(?s)(.*, )?Save(, .*)?', timeout: 30000, optional: true }
 - takeScreenshot: 07-files-save-window
-- tapOn: '(?s)(.*, )?Save(, .*)?'
+# On iOS 26 the Files window can stay out of the screen tree; then its Save button (top right) is tapped by position.
+# Whether the file really reached Files is checked by restoring it below.
+- runFlow:
+    when: { visible: '(?s)(.*, )?Save(, .*)?' }
+    commands:
+      - tapOn: '(?s)(.*, )?Save(, .*)?'
+- runFlow:
+    when: { notVisible: '(?s)(.*, )?Save(, .*)?' }
+    commands:
+      - tapOn: { point: "90%,10%" }
+- waitForAnimationToEnd: { timeout: 3000 }
 - runFlow:
     when:
       visible: '(?s)(.*, )?Replace(, .*)?'

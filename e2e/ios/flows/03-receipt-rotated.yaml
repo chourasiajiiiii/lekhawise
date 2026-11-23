@@ -23,6 +23,12 @@ name: Receipt scanning of a photo stored sideways with an orientation flag (as t
 # After the out-of-process photo picker, iOS can keep the closed form in the screen tree; the saved entry is checked below.
 - extendedWaitUntil: { notVisible: '(?s)(.*, )?(New|Edit) transaction(, .*)?', timeout: 20000, optional: true }
 - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
+- extendedWaitUntil: { visible: '(?s)(.*, )?1 entry(, .*)?', timeout: 10000, optional: true }
+# Right after the photo picker a link is sometimes dropped; open it again
+- runFlow:
+    when: { notVisible: '(?s)(.*, )?1 entry(, .*)?' }
+    commands:
+      - runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
 - extendedWaitUntil: { visible: '(?s)(.*, )?1 entry(, .*)?', timeout: 10000 }
 - assertVisible: ".*HARBOR FRESH MARKET.*"
 - assertVisible: '.*32\.25.*'
