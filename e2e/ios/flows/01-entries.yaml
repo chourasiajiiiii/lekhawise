@@ -118,7 +118,10 @@ name: Entries, home totals, edit, delete, search, data kept after restart
       - eraseText: 20
 - extendedWaitUntil: { visible: '(?s)(.*, )?3 entries(, .*)?', timeout: 10000 }
 
-# Delete it
+# Delete it (the Search key closes the keyboard, which covers the list)
+- pressKey: Enter
+- waitForAnimationToEnd: { timeout: 2000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: ".*Lunch.*" } }
 - tapOn: ".*Lunch.*"
 - extendedWaitUntil: { visible: '(?s)(.*, )?Edit transaction(, .*)?', timeout: 10000 }
 - scrollUntilVisible: { element: '(?s)(.*, )?Delete(, .*)?' }
