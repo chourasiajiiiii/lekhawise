@@ -1,0 +1,6 @@
+{
+  "_comment": "Google Drive backup. OAuth client IDs from Google Cloud Console (not secrets). See docs/google-drive-backup.md. Android needs no ID here: its OAuth client is matched by package name and signing certificate. Leave iOS values empty until there is an iOS client; Drive backup is then hidden on iPhone.",
+  "webClientId": "",
+  "iosClientId": "",
+  "iosUrlScheme": ""
+}

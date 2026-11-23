@@ -1,4 +1,4 @@
-import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Keyboard, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { t } from '../i18n/locale';
@@ -30,15 +30,17 @@ export function SelectModal({ visible, title, options, selected, onSelect, onCan
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel}>
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel} onShow={Keyboard.dismiss}>
       <View style={[styles.backdrop, { backgroundColor: colors.overlay }]}>
         <Pressable style={StyleSheet.absoluteFill} onPress={onCancel} accessibilityLabel={t('Close')} />
         <View style={[styles.sheet, { backgroundColor: colors.surface, paddingBottom: 16 + insets.bottom }]}>
           <AppText variant="heading" style={styles.title}>
             {title}
           </AppText>
-          {/* Option lists are short (categories, accounts, columns), so every row is rendered at once. */}
-          <ScrollView style={styles.list}>
+          {/* Option lists are short (categories, accounts, columns), so every row is rendered at once.
+              Taps reach the rows even while a field behind the sheet still holds the keyboard: on Android 10 and
+              older the first tap was otherwise spent closing that (hidden) keyboard, and the row needed a second. */}
+          <ScrollView style={styles.list} keyboardShouldPersistTaps="handled">
             {options.map((item) => (
               <Pressable
                 key={item.value}

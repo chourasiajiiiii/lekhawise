@@ -40,10 +40,16 @@ export function shareTextFile(fileName: string, content: string, options: { mime
 }
 
 /**
- * Android only. The folder picker opens in Documents: Android 11+ does not let apps use the root of
- * Downloads or of the phone storage, but Documents (or any sub-folder) is allowed.
+ * Android only: where the folder picker opens.
+ * - Android 11+ does not let apps use the root of Downloads or of the phone storage, but Documents (or any
+ *   sub-folder) is allowed, so it opens in Documents.
+ * - Android 10 and older hide the phone storage in the picker by default (only Recent and Downloads are listed),
+ *   so asking for Documents left the picker on an empty "Recent" page where no folder can be chosen. It opens in
+ *   Downloads there, which those versions allow.
  */
 const ANDROID_DOCUMENTS_URI = 'content://com.android.externalstorage.documents/document/primary%3ADocuments';
+const ANDROID_DOWNLOADS_URI = 'content://com.android.providers.downloads.documents/document/downloads';
+const folderPickerStart = () => (Number(Platform.Version) >= 30 ? ANDROID_DOCUMENTS_URI : ANDROID_DOWNLOADS_URI);
 
 /**
  * Android only: the user picks a folder on the phone and the file is written there.
@@ -59,7 +65,7 @@ export async function saveFileToFolder(
   if (Platform.OS !== 'android') throw new Error('Folder saving is only used on Android.');
   let folder: Directory;
   try {
-    folder = await Directory.pickDirectoryAsync(ANDROID_DOCUMENTS_URI);
+    folder = await Directory.pickDirectoryAsync(folderPickerStart());
   } catch {
     return false; // picker dismissed
   }

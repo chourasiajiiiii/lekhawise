@@ -85,9 +85,15 @@ export async function buildBackup(db: SQLiteDatabase, includePhotos = true): Pro
 
 type EncryptedEnvelope = { app: typeof BACKUP_APP_ID; encrypted: true; exportedAt: string; box: SealedBox };
 
-/** Creates a backup file. Returns false if the user cancelled choosing where to save it. */
-export async function exportBackup(db: SQLiteDatabase, options: BackupOptions = {}): Promise<boolean> {
+export type BackupText = { text: string; fileName: string; summary: BackupSummary };
+
+/** The backup file's content and name (the same for every destination: phone, share sheet, Google Drive). */
+export async function makeBackupText(
+  db: SQLiteDatabase,
+  options: Pick<BackupOptions, 'password' | 'includePhotos'> = {},
+): Promise<BackupText> {
   const backup = await buildBackup(db, options.includePhotos ?? true);
+  const summary = summarizeBackup(backup);
   let text = JSON.stringify(backup);
   let fileName = `lekhawise-backup-${todayISO()}.json`;
   if (options.password) {
@@ -100,8 +106,19 @@ export async function exportBackup(db: SQLiteDatabase, options: BackupOptions = 
     text = JSON.stringify(envelope);
     fileName = `lekhawise-backup-${todayISO()}-encrypted.json`;
   }
+  return { text, fileName, summary };
+}
+
+/** Remembers that a backup was made (the home screen's backup reminder and the Backup screen show it). */
+export function markBackupMade(): void {
+  setSetting(LAST_BACKUP_SETTING_KEY, new Date().toISOString());
+}
+
+/** Creates a backup file. Returns false if the user cancelled choosing where to save it. */
+export async function exportBackup(db: SQLiteDatabase, options: BackupOptions = {}): Promise<boolean> {
+  const { text, fileName } = await makeBackupText(db, options);
   const done = await deliver(options.destination ?? 'share', fileName, text, 'application/json', 'public.json');
-  if (done) setSetting(LAST_BACKUP_SETTING_KEY, new Date().toISOString());
+  if (done) markBackupMade();
   return done;
 }
 

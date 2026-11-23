@@ -10,6 +10,7 @@ import { AppLockGate } from '@/core/lock/AppLock';
 import { AppThemeProvider } from '@/core/theme/theme';
 import { todayISO } from '@/core/utils/date';
 import { cleanUpOrphanPhotos } from '@/features/expenses/attachments';
+import { autoBackupToDriveIfDue } from '@/features/expenses/drive/driveBackup';
 import { registerTranslations } from '@/features/expenses/i18n';
 import { notifyBudgetAlerts, rescheduleBillReminders } from '@/features/expenses/notifications';
 import { processRecurring } from '@/features/expenses/recurring';
@@ -113,6 +114,8 @@ function BackgroundTasks() {
       if (created > 0 && !cancelled) await notifyBudgetAlerts(await checkBudgetAlerts(db, getWeekStart()));
       if (!cancelled) await rescheduleBillReminders(db);
       if (!cancelled) await refreshWidget(db);
+      // Automatic Google Drive backup, when turned on and due (it keeps its own errors for the Backup screen).
+      if (!cancelled) await autoBackupToDriveIfDue(db);
     };
     catchUp().catch(report);
     cleanUpOrphanPhotos(db).catch(report);

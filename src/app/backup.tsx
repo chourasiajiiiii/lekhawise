@@ -17,6 +17,8 @@ import {
   pickBackup,
 } from '@/features/expenses/backup';
 import { BackupError } from '@/features/expenses/backupFormat';
+import { DriveBackupCard } from '@/features/expenses/components/DriveBackupCard';
+import { isDriveBackupAvailable } from '@/features/expenses/drive/driveBackup';
 import { exportCsv, exportXlsx } from '@/features/expenses/exports';
 import { useLastBackupAt } from '@/features/expenses/settings';
 
@@ -165,6 +167,21 @@ export default function BackupScreen() {
           />
         )}
       </Card>
+
+      {isDriveBackupAvailable() ? (
+        <>
+          <SectionTitle>{t('Google Drive')}</SectionTitle>
+          <DriveBackupCard
+            busy={busy}
+            setBusy={setBusy}
+            includePhotos={includePhotos}
+            onPicked={(picked) => {
+              if (picked.kind === 'encrypted') setEncrypted({ text: picked.text, fileName: picked.fileName });
+              else setPending(picked);
+            }}
+          />
+        </>
+      ) : null}
 
       <SectionTitle>{t('Restore')}</SectionTitle>
       <Card style={styles.gap}>

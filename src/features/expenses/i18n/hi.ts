@@ -1043,4 +1043,40 @@ export const hi: Record<string, string> = {
   'Delete template "{name}"?': 'टेम्पलेट "{name}" हटाएँ?',
   'No templates yet': 'अभी कोई टेम्पलेट नहीं',
   'Good for things you enter often: tea, fuel, the weekly vegetable shop.': 'अक्सर लिखी जाने वाली चीज़ों के लिए: चाय, पेट्रोल, हफ़्ते की सब्ज़ी।',
+
+  // ---- Google Drive backup
+  'Google Drive': 'Google Drive',
+  'Keep backups in your own Google Drive and restore them on this phone or a new one. They are stored in a private app folder that only LekhaWise can open.':
+    'बैकअप अपनी Google Drive में रखें और इसी फ़ोन या नए फ़ोन पर रिस्टोर करें। ये एक निजी ऐप फ़ोल्डर में रहते हैं जिसे सिर्फ़ LekhaWise खोल सकता है।',
+  'Sign in with Google': 'Google से साइन इन करें',
+  'Signed in as {email}': '{email} से साइन इन है',
+  'Last Drive backup: {date}': 'Drive पर पिछला बैकअप: {date}',
+  'No Drive backup yet.': 'Drive पर अभी कोई बैकअप नहीं।',
+  'Back up to Google Drive now': 'अभी Google Drive पर बैकअप लें',
+  'Automatic backup': 'अपने-आप बैकअप',
+  'Made when you open the app and the last backup is older than a day or a week. The 10 most recent backups are kept.':
+    'ऐप खोलने पर बनता है, जब पिछला बैकअप एक दिन या एक हफ़्ते से पुराना हो। सबसे नए 10 बैकअप रखे जाते हैं।',
+  'Restore from Google Drive': 'Google Drive से रिस्टोर करें',
+  'Choose a backup to restore': 'रिस्टोर करने के लिए बैकअप चुनें',
+  '{count} transactions': '{count} लेन-देन',
+  'Sign out of Google': 'Google से साइन आउट करें',
+  'Sign out of Google?': 'Google से साइन आउट करें?',
+  'Backups already in Google Drive stay there and can be restored after signing in again.':
+    'Google Drive में पहले से रखे बैकअप वहीं रहेंगे और दोबारा साइन इन करके रिस्टोर किए जा सकते हैं।',
+  'Sign out': 'साइन आउट',
+  'Backed up': 'बैकअप हो गया',
+  'Your data was saved to Google Drive.': 'आपका डेटा Google Drive में सेव हो गया।',
+  'No backups in Google Drive': 'Google Drive में कोई बैकअप नहीं',
+  'There is no LekhaWise backup in this Google account yet.': 'इस Google खाते में अभी LekhaWise का कोई बैकअप नहीं है।',
+  'The last automatic backup did not finish.': 'पिछला अपने-आप बैकअप पूरा नहीं हुआ।',
+  'Drive permission needed': 'Drive की अनुमति चाहिए',
+  'LekhaWise needs permission to keep its backups in your Google Drive.':
+    'LekhaWise को आपकी Google Drive में बैकअप रखने की अनुमति चाहिए।',
+  'Could not reach Google Drive. Check the internet connection and try again.':
+    'Google Drive तक नहीं पहुँच सके। इंटरनेट कनेक्शन जाँचें और फिर कोशिश करें।',
+  'Google no longer allows LekhaWise to use your Drive. Sign in again.':
+    'Google अब LekhaWise को आपकी Drive इस्तेमाल नहीं करने दे रहा। दोबारा साइन इन करें।',
+  'Your Google Drive is full. Free up space in Drive and try again.': 'आपकी Google Drive भर गई है। Drive में जगह खाली करके फिर कोशिश करें।',
+  'Google Drive did not accept the request. Try again later.': 'Google Drive ने अनुरोध स्वीकार नहीं किया। बाद में फिर कोशिश करें।',
+  'Google sign-in is not available in this build.': 'इस वर्ज़न में Google साइन इन उपलब्ध नहीं है।',
 };
