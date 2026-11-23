@@ -151,6 +151,28 @@ run_flow "$F/05-wealth.yaml"
 run_flow "$F/06-form-extras.yaml"
 run_flow "$F/07-reports-backup.yaml"
 
+# The iOS 26 simulator closes the share sheet on "Save to Files" without saving, so the backup file 07 made
+# (still in the app's cache) is put into Files > On My iPhone here, where 07b picks it for the restore.
+if wanted 07b; then
+  APP_DATA=$(xcrun simctl get_app_container "$UDID" "$BUNDLE" data 2> /dev/null)
+  BACKUP=$(ls -t "$APP_DATA"/Library/Caches/lekhawise-backup-*.json 2> /dev/null | head -1)
+  SHARED="$HOME/Library/Developer/CoreSimulator/Devices/$UDID/data/Containers/Shared/AppGroup"
+  LOCAL_FILES=""
+  for meta in "$SHARED"/*/.com.apple.mobile_container_manager.metadata.plist; do
+    if plutil -extract MCMMetadataIdentifier raw "$meta" 2> /dev/null | grep -qx 'group.com.apple.FileProvider.LocalStorage'; then
+      LOCAL_FILES="$(dirname "$meta")/File Provider Storage"
+    fi
+  done
+  if [ -n "$BACKUP" ] && [ -n "$LOCAL_FILES" ]; then
+    mkdir -p "$LOCAL_FILES" && cp "$BACKUP" "$LOCAL_FILES/"
+    pass "backup file from 07 placed in Files > On My iPhone ($(basename "$BACKUP"))"
+  else
+    fail "could not place the backup file in Files (backup: ${BACKUP:-none}, Files storage: ${LOCAL_FILES:-none})"
+    ls "$APP_DATA/Library/Caches" "$SHARED" > "$OUT/files-placement.txt" 2>&1
+  fi
+fi
+run_flow "$F/07b-restore.yaml"
+
 # Screen trees and screenshots of the main screens (with the data from 07), for checking layouts and labels.
 if wanted "screens"; then
   xcrun simctl launch "$UDID" "$BUNDLE" > /dev/null; sleep 4

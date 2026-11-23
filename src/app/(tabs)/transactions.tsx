@@ -115,6 +115,9 @@ export default function TransactionsScreen() {
         onChangeText={setSearch}
         clearButtonMode="while-editing"
         returnKeyType="search"
+        // Search terms are partial words and amounts: autocorrect would turn "lunc" into another word.
+        autoCorrect={false}
+        autoCapitalize="none"
       />
       {query.trim() ? (
         <AppText variant="caption" muted>

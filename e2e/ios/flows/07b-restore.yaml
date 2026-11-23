@@ -1,0 +1,47 @@
+appId: com.lekhawise.app
+name: Backup restored from Files (run.sh put the backup file from 07 there), CSV
+---
+# Continues with the data 07 left: the backup has 3 entries, and an entry was added after it
+- launchApp
+- extendedWaitUntil: { visible: '(?s)(.*, )?Total balance.*(, .*)?', timeout: 30000 }
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
+- extendedWaitUntil: { visible: '(?s)(.*, )?4 entries(, .*)?', timeout: 10000 }
+
+# ... is gone again after restoring the backup picked from Files
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
+- scrollUntilVisible: { element: '(?s)(.*, )?Choose backup file(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
+- tapOn: '(?s)(.*, )?Choose backup file(, .*)?'
+- waitForAnimationToEnd: { timeout: 5000 }
+- takeScreenshot: 07-file-picker
+- runFlow:
+    when:
+      notVisible: '(?s)(.*, )?lekhawise-backup.*(, .*)?'
+    commands:
+      - tapOn: { text: '(?s)(.*, )?Browse(, .*)?', optional: true }
+      - tapOn: { text: '(?s)(.*, )?On My iPhone(, .*)?', optional: true }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?lekhawise-backup.*(, .*)?' } }
+- tapOn: '(?s)(.*, )?lekhawise-backup.*(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Restore this backup(, .*)?', timeout: 10000 }
+- takeScreenshot: 07-restore-preview
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Restore this backup(, .*)?' } }
+- tapOn: '(?s)(.*, )?Restore this backup(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Replace all data\?(, .*)?', timeout: 5000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?Replace(, .*)?' } }
+- tapOn: '(?s)(.*, )?Replace(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Restored(, .*)?', timeout: 10000 }
+- runFlow: { file: common/find.yaml, env: { TEXT: '(?s)(.*, )?OK(, .*)?' } }
+- tapOn: '(?s)(.*, )?OK(, .*)?'
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "transactions" } }
+- extendedWaitUntil: { visible: '(?s)(.*, )?3 entries(, .*)?', timeout: 10000 }
+- assertNotVisible: ".*Shoes.*"
+- takeScreenshot: 07-after-restore
+
+# CSV export opens the share sheet
+- runFlow: { file: common/open.yaml, env: { PATH_TO: "backup" } }
+- scrollUntilVisible: { element: '(?s)(.*, )?Share CSV(, .*)?' }
+- waitForAnimationToEnd: { timeout: 3000 }
+- tapOn: '(?s)(.*, )?Share CSV(, .*)?'
+- extendedWaitUntil: { visible: '(?s)(.*, )?Save to Files(, .*)?', timeout: 30000 }
+- takeScreenshot: 07-csv-share-sheet
+- runFlow: common/close-share.yaml
